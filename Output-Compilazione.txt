@@ -1,0 +1,10 @@
+﻿1>------ Inizio compilazione: Progetto: Stack Program, Configurazione: Debug Any CPU ------
+1>  Stack Program -> C:\Users\netwo\documents\visual studio 2015\Projects\Stack Program\Stack Program\bin\Debug\Stack Program.exe
+Compilazione di Stack Program in corso...
+2>------ Pubblicazione avviata: Progetto: Stack Program, Configurazione: Debug Any CPU ------
+Connessione a 'C:\Users\netwo\documents\visual studio 2015\Projects\Stack Program\Stack Program\publish\' in corso...
+Pubblicazione dei file in corso...
+Pubblicazione completata.
+C:\Users\netwo\documents\visual studio 2015\Projects\Stack Program\Stack Program\publish\
+========== Compilazione: 1 completate, 0 non riuscite, 0 aggiornate, 0 ignorate ==========
+========== Pubblicazione: 1 completate, 0 non riuscite, 0 ignorate ==========

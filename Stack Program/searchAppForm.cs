@@ -24,7 +24,7 @@ namespace Stack_Program
         public searchAppForm()
         {
             InitializeComponent();
-            lbInfo.BackColor = Color.Transparent;
+            //lbInfo.BackColor = Color.Transparent;
             // backgroundWorker1.WorkerReportsProgress = true;
             // backgroundWorker1.WorkerSupportsCancellation = true;
         }
@@ -38,7 +38,7 @@ namespace Stack_Program
 
             this.Activate();
 
-            gridSearch.AllowUserToAddRows = false;
+           /* gridSearch.AllowUserToAddRows = false;
             gridSearch.AllowUserToDeleteRows = false;
             gridSearch.ReadOnly = true;
             gridSearch.RowHeadersVisible = false;
@@ -48,7 +48,7 @@ namespace Stack_Program
             gridSearch.MultiSelect = false;
             gridSearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             gridSearch.AllowUserToOrderColumns = true;
-            gridSearch.ColumnCount = 20;
+            gridSearch.ColumnCount = 20;*/
 
             /*gridSearch.Columns[0].Name = "Nome";
             gridSearch.Columns[1].Name = "Dir";
@@ -103,6 +103,7 @@ namespace Stack_Program
                 }
 
             }
+            treeLnk.Sort((x, y) => string.Compare(x.name, y.name));
 
 
 
@@ -113,14 +114,49 @@ namespace Stack_Program
         public void populateTree()
         {
 
+            List<String> alphabet = new List<String>();
 
             tree.Nodes.Clear();
+            int lastIndex = 0 ;
+
             for (int i = 0; i < treeLnk.Count; i++)
             {
 
-                treeLnk.Sort((x, y) => string.Compare(x.name, y.name));
-                //var t = 0;
+                string t = treeLnk[i].name.Substring(0, 1).ToString().ToUpper();
+
+                //TreeNode temp = new TreeNode();
+                //temp.Name = t;
+                if (!tree.Nodes.ContainsKey(t))
+                {
+                    tree.Nodes.Insert(i, t, t);
+                    alphabet.Add( t );
+                }
+                    
+
+
+                
             }
+            int c=0;
+
+            for (int i = 0; i < alphabet.Count; i++)
+            {
+
+                for (; c < treeLnk.Count; c++)
+                {
+                    if (treeLnk[c].name.ToUpper().StartsWith( alphabet[i] ))
+                    {
+                        tree.Nodes[i].Nodes.Add(treeLnk[ c ].name);
+                    }
+                    else
+                        break;
+                }
+
+                    
+
+               
+            }
+
+            tree.ExpandAll();
 
         }
 
