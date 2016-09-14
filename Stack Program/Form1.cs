@@ -69,10 +69,12 @@ namespace Stack_Program
                 profiles = new List<Profile>();
                 this.tempProfile = new Profile("temp");
                 selectedProfile = this.tempProfile;
+                
             }
             else
             {
                 selectedProfile = profiles[0];
+                enableButtons();
             }
             
             
