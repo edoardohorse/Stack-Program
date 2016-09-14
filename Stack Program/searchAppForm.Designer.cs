@@ -28,27 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tree = new System.Windows.Forms.TreeView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SuspendLayout();
             // 
             // tree
             // 
-            this.tree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tree.CheckBoxes = true;
-            this.tree.FullRowSelect = true;
             this.tree.HotTracking = true;
             this.tree.Location = new System.Drawing.Point(35, 33);
             this.tree.Name = "tree";
-            this.tree.Size = new System.Drawing.Size(376, 575);
+            this.tree.ShowNodeToolTips = true;
+            this.tree.Size = new System.Drawing.Size(369, 575);
             this.tree.TabIndex = 3;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Enabled = false;
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // searchAppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(445, 657);
+            this.ClientSize = new System.Drawing.Size(554, 657);
             this.Controls.Add(this.tree);
             this.Name = "searchAppForm";
             this.Text = "Sfoglia fra i programmi";
@@ -60,5 +65,6 @@
 
         #endregion
         private System.Windows.Forms.TreeView tree;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

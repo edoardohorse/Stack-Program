@@ -8,6 +8,7 @@ using System.IO;
 
 namespace Stack_Program
 {
+    [Serializable]
     public class File
     {
         public FileInfo file;
@@ -18,11 +19,16 @@ namespace Stack_Program
 
         public File(string dir)
         {
-            this.file = new FileInfo(dir);
+            if( dir != null)
+            {
+                this.file = new FileInfo(dir);
+                this.fileName = this.file.Name;
+                this.name = this.fileName.Substring(0, this.fileName.LastIndexOf("."));
+            }
+                
             this.dir = dir;
             //this.parentDir;
-            this.fileName = this.file.Name;
-            this.name = this.fileName.Substring(0, this.fileName.LastIndexOf("."));
+            
 
 
         }
@@ -36,6 +42,7 @@ namespace Stack_Program
         {
             Process.Start(@temp.dir);
         }
+        
 
     }
 }

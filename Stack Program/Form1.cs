@@ -12,20 +12,26 @@ using System.Diagnostics;
 using IWshRuntimeLibrary;
 using System.Management;
 using System.Management.Instrumentation;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Stack_Program
 {
     public partial class Form1 : Form
     {
 
-        List<File> files = new List<File>();
-        DataGridView grid;
+        
+        Grid grid;
+        
         bool areButtonsEnabled = false;
+        List<Profile> profiles = new List<Stack_Program.Profile>();
+        Profile tempProfile;
+        Profile selectedProfile;
+        FileInfo fileAppData;
+        string dirAppData;
 
+//        public delegate void returnGrid();
 
-
-        bool isSettedGrid = false;
         public Form1()
         {
             InitializeComponent();
@@ -35,9 +41,41 @@ namespace Stack_Program
 
         private void Form1_Load(object sende, EventArgs e)
         {
-            grid = this.Controls.Find("dataGridView", false).FirstOrDefault() as DataGridView;
-            setGrid();
+            grid = this.Controls.Find("grid1", false).FirstOrDefault() as Grid;
+            grid.setGrid();
 
+
+            dirAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create) + "\\Stack Program";
+            fileAppData = new FileInfo(dirAppData + "\\stack_program.json");
+            if( Directory.Exists(dirAppData))
+            {
+                if( fileAppData.Exists)
+                {
+                    StreamReader fp = new StreamReader(fileAppData.FullName);
+                    string str = fp.ReadToEnd();
+                    restoreProfileFromJson( str );
+                    fp.Close();
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(dirAppData);
+            }
+            
+
+
+            if( profiles== null)
+            {
+                profiles = new List<Profile>();
+                this.tempProfile = new Profile("temp");
+                selectedProfile = this.tempProfile;
+            }
+            else
+            {
+                selectedProfile = profiles[0];
+            }
+            
+            
 
         }
 
@@ -54,9 +92,12 @@ namespace Stack_Program
             for (var i = 0; i < d.FileNames.Length; i++)
             {
 
-                files.Add(new File(d.FileNames[i]));
-                addFileToGUI(files.Last<File>());
+                selectedProfile.addFile(new File(d.FileNames[i]), this);
+                
             }
+
+            //selectedProfile.addProfileToGrid();
+
             if (d.FileNames.Length > 0)
                 enableButtons();
 
@@ -64,63 +105,13 @@ namespace Stack_Program
 
         }
 
-        private void addFileToGUI(File temp)
-        {
-
-            if (!isSettedGrid)
-            {
-                setGrid();
-            }
-
-
-
-            int i = 0;
-            grid.Rows.Add();
-            grid.Rows[grid.RowCount - 1].Cells[i++].Value = files.Count.ToString();
-            grid.Rows[grid.RowCount - 1].Cells[i++].Value = temp.name.ToString();
-            grid.Rows[grid.RowCount - 1].Cells[i++].Value = temp.dir.ToString();
-
-
-
-
-
-        }
-
-        private void setGrid()
-        {
-
-            //File f = new File("");
-
-            grid.AllowUserToAddRows = false;
-            grid.AllowUserToDeleteRows = false;
-            grid.ReadOnly = true;
-            grid.RowHeadersVisible = false;
-            grid.AllowUserToResizeRows = false;
-            grid.ShowCellToolTips = true;
-            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            grid.MultiSelect = false;
-            grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            grid.AllowUserToOrderColumns = true;
-
-
-            grid.ColumnCount = 3;//f.GetType().GetFields().Length + 1;
-            int i = 0;
-            grid.Columns[i++].Name = "#";
-            grid.Columns[i++].Name = "Nome";
-            grid.Columns[i++].Name = "Directory";
-
-
-
-            grid.Columns[0].Width = 50;
-
-
-            isSettedGrid = true;
-        }
+        
+        
 
         private void runApp_Click(object sender, EventArgs e)
         {
-            File.Start(files[grid.SelectedRows[0].Index]);
-
+            selectedProfile.runApp(grid.SelectedRows[0].Index);
+            
             /* ProcessStartInfo myProcess = new ProcessStartInfo();
 
              try
@@ -152,19 +143,27 @@ namespace Stack_Program
 
         private void runAll_Click(object sender, EventArgs e)
         {
-            foreach (File temp in files)
-            {
-                temp.Start();
-            }
+            selectedProfile.runAll();
         }
 
         private void deleteApp_Click(object sender, EventArgs e)
         {
-            int index = grid.SelectedRows[0].Index;
-            files.Remove(files[index]);
-            grid.Rows.RemoveAt(index);
+            
+            if ( grid.Rows.Count == 1 )
+            {
+                grid.Rows.Clear();
+                selectedProfile.clearFiles();
+                disableButtons();
+            }
+            else
+            {
+                int index = grid.SelectedRows[0].Index;
+                selectedProfile.removeFile(index);
+                grid.Rows.RemoveAt(index);
+                grid.updateIndex();
+            }
 
-            updateIndex();
+            
 
         }
 
@@ -178,29 +177,27 @@ namespace Stack_Program
             if (result.ToString() == "Yes")
             {
                 grid.Rows.Clear();
-                files.Clear();
+                selectedProfile.clearFiles();
                 disableButtons();
             }
 
 
         }
 
-        private void updateIndex()
-        {
-            foreach (DataGridViewRow row in grid.Rows)
-            {
-                row.Cells[0].Value = row.Index + 1;
-            }
-        }
+        
 
         private void enableButtons()
         {
-            areButtonsEnabled = deleteAll.Enabled = deleteApp.Enabled = runAll.Enabled = runApp.Enabled = true;
+            areButtonsEnabled = deleteAll.Enabled =
+                deleteApp.Enabled = runAll.Enabled = 
+                runApp.Enabled = addProfile.Enabled = true;
         }
 
         private void disableButtons()
         {
-            areButtonsEnabled = deleteAll.Enabled = deleteApp.Enabled = runAll.Enabled = runApp.Enabled = false;
+            areButtonsEnabled = deleteAll.Enabled =
+               deleteApp.Enabled = runAll.Enabled =
+               runApp.Enabled = addProfile.Enabled = false;
         }
 
         private void toggleEnableButtons()
@@ -212,6 +209,140 @@ namespace Stack_Program
 
 
         }
+
+
+        private void addProfile_Click(object sender, EventArgs e)
+        {
+            if( selectedProfile.countFiles > 0 && profiles.Count == 0)
+            {
+                DialogResult result = MessageBox.Show("Vuoi aggiungire i " + selectedProfile.countFiles+" programmi già presenti in questo profilo.\nSe no i programmi aggiunti verrano persi",
+                    "Attenzione", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                if( result == DialogResult.Yes)
+                {
+                    inputMessage testDialog = new inputMessage();
+
+                    
+                    if (testDialog.ShowDialog(this) == DialogResult.OK)
+                    {
+                    
+                        selectedProfile.name = testDialog.textBox1.Text ;
+                        listProfiles.Items.Add( selectedProfile.name );
+                        profiles.Add(selectedProfile);
+                        testDialog.Dispose();
+
+                    }
+                    else
+                    {
+                        listProfiles.Items.Add(testDialog.textBox1.Text);
+                        profiles.Add(new Profile(testDialog.textBox1.Text));
+                    }
+                    
+                }
+
+            }
+            else
+            {
+                inputMessage testDialog = new inputMessage();
+
+                // Show testDialog as a modal dialog and determine if DialogResult = OK.
+                if (testDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    // Read the contents of testDialog's TextBox.
+                    listProfiles.Items.Add(testDialog.textBox1.Text);
+                    profiles.Add(new Profile(testDialog.textBox1.Text));
+                    //profiles.Add(testDialog.textBox1.Text);
+                }
+                testDialog.Dispose();
+            }
+            
+
+
+            if( listProfiles.Items.Count > 0 )
+                removeProfile.Enabled = true;
+
+
+            grid.Rows.Clear();
+            selectedProfile = profiles.Last<Profile>();
+            listProfiles.SelectedIndex = profiles.IndexOf( selectedProfile );
+
+        }
+
+        private void removeProfile_Click(object sender, EventArgs e)
+        {
+
+            int index = listProfiles.SelectedIndex;
+            if (listProfiles.SelectedIndex != -1)
+            {
+
+                profiles.RemoveAt(index);
+                listProfiles.Items.RemoveAt(index);
+                
+            }
+            if (listProfiles.Items.Count == 0)
+                removeProfile.Enabled = false;
+            else
+                listProfiles.SelectedIndex = index-1;
+        }
+
+        private void saveProfiles(object sender, FormClosingEventArgs e)
+        {
+
+    /*        JObject arr = new JObject();
+            foreach ( Profile temp in profiles)
+            {
+                
+                
+                arr.Add(temp.name,temp.serialize());
+            }*/
+            //string str =  JsonConvert.SerializeObject(arr);
+            string str = JsonConvert.SerializeObject(profiles);
+
+            StreamWriter ft = new StreamWriter(fileAppData.FullName);
+            ft.Write(str);
+            ft.Close();
+
+
+
+
+        }
+
+        private void listProfiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if( listProfiles.SelectedIndex == -1)
+            {
+                grid.Rows.Clear();
+                this.tempProfile = new Profile("temp");
+                selectedProfile = this.tempProfile;
+            }
+            else
+            {
+                selectedProfile = profiles[listProfiles.SelectedIndex];
+                selectedProfile.addProfileToGrid(this);
+            }
+            
+        }
+
+        public void restoreProfileFromJson( string str )
+        {
+
+            profiles = JsonConvert.DeserializeObject<List<Profile>>(str);
+
+            
+            foreach( Profile temp in profiles)
+            {
+                listProfiles.Items.Add(temp.name);
+            }
+
+            profiles[0].addProfileToGrid(this);
+            listProfiles.SelectedIndex = 0;
+            removeProfile.Enabled = true;
+        }
+
+        public Grid returnGrid()
+        {
+            return grid;
+        }
+
 
         /*
         private void grid_MouseMove(object sender, MouseEventArgs e)
@@ -280,6 +411,53 @@ namespace Stack_Program
             }
         }
         */
+
+    }
+    public class Grid: DataGridView
+    {
+        private bool _isSettedGrid = false;
+
+        public bool isSettedGrid
+        {
+            get { return _isSettedGrid; }
+            set { _isSettedGrid = value; }
+        }
+
+        public void setGrid() {
+            this.AllowUserToAddRows = false;
+            this.AllowUserToDeleteRows = false;
+            this.ReadOnly = true;
+            this.RowHeadersVisible = false;
+            this.AllowUserToResizeRows = false;
+            this.ShowCellToolTips = true;
+            this.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.MultiSelect = false;
+            this.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.AllowUserToOrderColumns = true;
+
+
+            this.ColumnCount = 3;//f.GetType().GetFields().Length + 1;
+            int i = 0;
+            this.Columns[i++].Name = "#";
+            this.Columns[i++].Name = "Nome";
+            this.Columns[i++].Name = "Directory";
+
+
+
+            this.Columns[0].Width = 50;
+
+
+            isSettedGrid = true;
+        }
+
+        public void updateIndex()
+        {
+            foreach (DataGridViewRow row in this.Rows)
+            {
+                row.Cells[0].Value = row.Index + 1;
+            }
+        }
+
 
     }
 }

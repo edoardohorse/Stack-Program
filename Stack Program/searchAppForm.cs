@@ -37,22 +37,22 @@ namespace Stack_Program
         {
 
             this.Activate();
-
-           /* gridSearch.AllowUserToAddRows = false;
-            gridSearch.AllowUserToDeleteRows = false;
-            gridSearch.ReadOnly = true;
-            gridSearch.RowHeadersVisible = false;
-            gridSearch.AllowUserToResizeRows = false;
-            gridSearch.ShowCellToolTips = true;
-            gridSearch.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            gridSearch.MultiSelect = false;
-            gridSearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            gridSearch.AllowUserToOrderColumns = true;
-            gridSearch.ColumnCount = 20;*/
+            /* gridSearch.AllowUserToAddRows = false;
+             gridSearch.AllowUserToDeleteRows = false;
+             gridSearch.ReadOnly = true;
+             gridSearch.RowHeadersVisible = false;
+             gridSearch.AllowUserToResizeRows = false;
+             gridSearch.ShowCellToolTips = true;
+             gridSearch.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+             gridSearch.MultiSelect = false;
+             gridSearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+             gridSearch.AllowUserToOrderColumns = true;
+             gridSearch.ColumnCount = 20;*/
 
             /*gridSearch.Columns[0].Name = "Nome";
             gridSearch.Columns[1].Name = "Dir";
             gridSearch.Columns[2].Name = "Icon";*/
+            
 
         }
 
@@ -63,8 +63,11 @@ namespace Stack_Program
 
             Console.WriteLine("iniziato");
             // backgroundWorker1.RunWorkerAsync();
+           
+
             GetInstalledApps();
             populateTree();
+        //    provaDraw();
 
         }
 
@@ -117,7 +120,6 @@ namespace Stack_Program
             List<String> alphabet = new List<String>();
 
             tree.Nodes.Clear();
-            int lastIndex = 0 ;
 
             for (int i = 0; i < treeLnk.Count; i++)
             {
@@ -129,6 +131,10 @@ namespace Stack_Program
                 if (!tree.Nodes.ContainsKey(t))
                 {
                     tree.Nodes.Insert(i, t, t);
+
+                    
+
+                    //tree.Nodes[i].StateImageIndex = 
                     alphabet.Add( t );
                 }
                     
@@ -146,6 +152,8 @@ namespace Stack_Program
                     if (treeLnk[c].name.ToUpper().StartsWith( alphabet[i] ))
                     {
                         tree.Nodes[i].Nodes.Add(treeLnk[ c ].name);
+                        tree.Nodes[i].Nodes[tree.Nodes[i].Nodes.Count -1].ToolTipText = treeLnk[c].dir.ToString();
+                        
                     }
                     else
                         break;
@@ -157,81 +165,29 @@ namespace Stack_Program
             }
 
             tree.ExpandAll();
-
+            tree.Nodes[0].EnsureVisible();
         }
 
-
-        /*
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        public void provaDraw()
         {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            int i = 0;
-            
-            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_Product"); //  Where Name='iTunes'
-            ManagementObjectCollection collection = mos.Get();
-            foreach (ManagementObject mo in collection)
-            {
-                if (worker.CancellationPending == true)
-                {
-                    e.Cancel = true;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine(mo["Name"]);
-                    if( mo["Name"] != null && mo["InstallLocation"] != null)
-                        programs.Add(mo["InstallLocation"].ToString()+mo["Name"].ToString()+".exe" );
-                    worker.ReportProgress(i++);
-                    
+         /*   System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+            System.Drawing.Graphics formGraphics;
+            formGraphics = this.CreateGraphics();
+            Point p = new Point();
+            p.X = 20;
+            p.Y = 20;
 
-                }
-            }
+            Graphics theGraphics = Graphics.FromHwnd(this.Handle);
 
+            Bitmap img = new Bitmap(100, 100, theGraphics);
+            this.DrawToBitmap(img, new Rectangle(20,20));
+
+
+            //formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, 10, 10));
+            myBrush.Dispose();
+            formGraphics.Dispose();*/
         }
 
-        // This event handler updates the progress.
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if( e.ProgressPercentage < 100 )
-                barSearch.Value = e.ProgressPercentage;
-           
-        }
-
-        // This event handler deals with the results of the background operation.
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled == true)
-            {
-                Console.WriteLine("Canceled!");
-            }
-            else if (e.Error != null)
-            {
-                Console.WriteLine("Error: " + e.Error.Message);
-            }
-            else
-            {
-                Console.WriteLine("Done!");
-                barSearch.Visible = false;
-                lbInfo.Visible = false;
-
-                foreach( var i in programs)
-                {
-                    gridSearch.Rows.Add();
-                    gridSearch.Rows[gridSearch.RowCount - 1].Cells[0].Value = i;
-                }
-
-                gridSearch.Sort(gridSearch.Columns[0], ListSortDirection.Ascending);
-                
-            }
-        }
-
-        private void cancelAsync(object sender, FormClosingEventArgs e)
-        {
-            if (backgroundWorker1.WorkerSupportsCancellation == true)
-            {
-                // Cancel the asynchronous operation.
-                backgroundWorker1.CancelAsync();
-            }
-        }*/
     }
+
 }
