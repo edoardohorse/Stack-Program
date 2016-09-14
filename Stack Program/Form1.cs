@@ -327,7 +327,10 @@ namespace Stack_Program
 
             profiles = JsonConvert.DeserializeObject<List<Profile>>(str);
 
-            
+            if (profiles.Count == 0) {
+                profiles = null;
+                return;
+            }
             foreach( Profile temp in profiles)
             {
                 listProfiles.Items.Add(temp.name);
