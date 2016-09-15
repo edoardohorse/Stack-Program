@@ -83,18 +83,33 @@ namespace Stack_Program
             dir.CopyTo(concat, 0);
             dir2.CopyTo(concat, dir.Length);
 
-            var f = Directory.GetFiles(path, "*.lnk");
+            var f = Directory.GetFiles(path);
 
 
             foreach (string i in concat)
             {
-                var t = Directory.GetFiles(i, "*.lnk");
+                var t = Directory.GetFiles(i);
                 foreach (string c in t)
                 {
-                    //FileInfo temp = new FileInfo(c);
-                    IWshShell shell = new WshShell();
-                    var lnk = shell.CreateShortcut(c) as IWshShortcut;
-                    if (lnk.TargetPath.EndsWith(".exe"))
+                    FileInfo temp1 = new FileInfo(c);
+                    if (temp1.Extension == ".lnk")
+                    {
+                        IWshShell shell = new WshShell();
+                        var lnk = shell.CreateShortcut(c) as IWshShortcut;
+
+                        if (lnk.TargetPath.EndsWith(".exe"))
+                        {
+                            File temp = new Stack_Program.File(c);
+                            temp.parentDir = c.Split(new[] { path }, StringSplitOptions.RemoveEmptyEntries)[0];
+                            if (temp.parentDir != null)
+                                temp.parentDir = c.Split(new[] { path2 }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+                            treeLnk.Add(temp);
+                        }
+
+                    }
+
+                    if( temp1.Extension == ".appref-ms")
                     {
                         File temp = new Stack_Program.File(c);
                         temp.parentDir = c.Split(new[] { path }, StringSplitOptions.RemoveEmptyEntries)[0];
@@ -103,6 +118,8 @@ namespace Stack_Program
 
                         treeLnk.Add(temp);
                     }
+                    
+                    
                 }
 
             }

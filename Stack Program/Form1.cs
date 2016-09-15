@@ -89,7 +89,7 @@ namespace Stack_Program
             d.DereferenceLinks = false;
             //d.SupportMultiDottedExtensions = true;
             d.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            d.Filter = "Programmi|*.exe| Collegamenti|*.lnk";
+            d.Filter = "Programmi|*.exe|Collegamenti|*.lnk|Application Reference|*.appref-ms";
             d.ShowDialog();
             for (var i = 0; i < d.FileNames.Length; i++)
             {
