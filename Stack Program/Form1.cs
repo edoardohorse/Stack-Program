@@ -29,8 +29,8 @@ namespace Stack_Program
         Profile selectedProfile;
         FileInfo fileAppData;
         string dirAppData;
-
-//        public delegate void returnGrid();
+        string previousPath = "";
+        //        public delegate void returnGrid();
 
         public Form1()
         {
@@ -83,12 +83,14 @@ namespace Stack_Program
 
         private void addProgram_Click(object sender, EventArgs e)
         {
+            
             OpenFileDialog d = new OpenFileDialog();
             d.RestoreDirectory = true;
             d.Multiselect = true;
             d.DereferenceLinks = false;
             //d.SupportMultiDottedExtensions = true;
-            d.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            if ( previousPath == "" )
+                d.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             d.Filter = "Programmi|*.exe|Collegamenti|*.lnk|Application Reference|*.appref-ms";
             d.ShowDialog();
             for (var i = 0; i < d.FileNames.Length; i++)
@@ -97,7 +99,8 @@ namespace Stack_Program
                 selectedProfile.addFile(new File(d.FileNames[i]), this);
                 
             }
-
+            if( d.FileName !=  "" )
+                previousPath = Path.GetDirectoryName(d.FileNames[0]);
             //selectedProfile.addProfileToGrid();
 
             if (d.FileNames.Length > 0)
@@ -113,27 +116,6 @@ namespace Stack_Program
         private void runApp_Click(object sender, EventArgs e)
         {
             selectedProfile.runApp(grid.SelectedRows[0].Index);
-            
-            /* ProcessStartInfo myProcess = new ProcessStartInfo();
-
-             try
-             {
-
-                 // You can start any process, HelloWorld is a do-nothing example.
-                 myProcess.FileName = temp.dir;
-                 myProcess.CreateNoWindow = false;
-                 myProcess.UseShellExecute = false;
-                 myProcess.WindowStyle = ProcessWindowStyle.Hidden;
-                 Process.Start(myProcess);
-                 // This code assumes the process you are starting will terminate itself. 
-                 // Given that is is started without a window so you cannot terminate it 
-                 // on the desktop, it must terminate itself or you can do it programmatically
-                 // from this application using the Kill method.
-             }
-             catch (Exception err)
-             {
-                 Console.WriteLine(err.Message);
-             }*/
         }
 
         private void searchApp_Click(object sender, EventArgs e)
