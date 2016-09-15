@@ -95,8 +95,11 @@ namespace Stack_Program
             d.ShowDialog();
             for (var i = 0; i < d.FileNames.Length; i++)
             {
-
-                selectedProfile.addFile(new File(d.FileNames[i]), this);
+                File temp = new File(d.FileNames[i]);
+                if (selectedProfile.containsFile(temp))
+                    MessageBox.Show("Questo programma è già presente in questo profilo");
+                else
+                    selectedProfile.addFile(temp, this);
                 
             }
             if( d.FileName !=  "" )

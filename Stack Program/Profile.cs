@@ -83,9 +83,18 @@ namespace Stack_Program
 
         public string serialize()
         {
-
-            return JsonConvert.SerializeObject( files );
+           return JsonConvert.SerializeObject( files );
         }
 
+
+        public bool containsFile(File temp)
+        {
+            foreach (File t in files)
+            {
+                if (temp.file.FullName == t.file.FullName)
+                    return true;
+            }
+            return false;
+        }
     }
 }
