@@ -256,6 +256,11 @@ namespace Stack_Program
                     listProfiles.Items.Add(testDialog.textBox1.Text);
                     profiles.Add(new Profile(testDialog.textBox1.Text));
                     //profiles.Add(testDialog.textBox1.Text);
+
+
+                    grid.Rows.Clear();
+                    selectedProfile = profiles.Last<Profile>();
+                    listProfiles.SelectedIndex = profiles.IndexOf(selectedProfile);
                 }
                 testDialog.Dispose();
             }
@@ -266,9 +271,7 @@ namespace Stack_Program
                 removeProfile.Enabled = true;
 
 
-            grid.Rows.Clear();
-            selectedProfile = profiles.Last<Profile>();
-            listProfiles.SelectedIndex = profiles.IndexOf( selectedProfile );
+            
 
         }
 
