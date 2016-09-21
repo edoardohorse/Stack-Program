@@ -82,16 +82,20 @@ namespace Stack_Program
 
             var dir = Directory.GetDirectories(path);
             var dir2 = Directory.GetDirectories(path2);
-            string[] concat = new string[dir.Length + dir2.Length];
+            string[] concat = new string[dir.Length + dir2.Length +2 ];
             dir.CopyTo(concat, 0);
             dir2.CopyTo(concat, dir.Length);
 
-            var f = Directory.GetFiles(path);
 
+            concat[concat.Length - 2] = path;
+            concat[concat.Length - 1] = path2;
 
             foreach (string i in concat)
             {
-                var t = Directory.GetFiles(i);
+                string[] t = Directory.GetFiles(i);
+
+                
+
                 foreach (string c in t)
                 {
                     FileInfo temp1 = new FileInfo(c);
@@ -144,7 +148,7 @@ namespace Stack_Program
             for (int i = 0; i < treeLnk.Count; i++)
             {
 
-                string t = treeLnk[i].name.Substring(0, 1).ToString().ToUpper();
+                string t = treeLnk[i].name.Substring(0, 1).ToString().ToUpperInvariant();
 
                 //TreeNode temp = new TreeNode();
                 //temp.Text = t;
@@ -170,7 +174,7 @@ namespace Stack_Program
 
                 for (; c < treeLnk.Count; c++)
                 {
-                    if (treeLnk[c].name.ToUpper().StartsWith( alphabet[i] ))
+                    if (treeLnk[c].name.ToUpperInvariant().StartsWith( alphabet[i] ))
                     {
                         tree.Nodes[i].Nodes.Add(treeLnk[ c ].name);
                         tree.Nodes[i].Nodes[tree.Nodes[i].Nodes.Count -1].ToolTipText = treeLnk[c].dir.ToString();
