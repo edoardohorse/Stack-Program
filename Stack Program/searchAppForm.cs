@@ -18,7 +18,9 @@ namespace Stack_Program
     public partial class searchAppForm : Form
     {
 
-        List<String> programs = new List<string>();
+        public List<File> selectedPrograms = new List<File>();
+
+
         List<File> treeLnk = new List<File>();
 
         public searchAppForm()
@@ -67,6 +69,7 @@ namespace Stack_Program
 
             GetInstalledApps();
             populateTree();
+            tree.Visible = true;
         //    provaDraw();
 
         }
@@ -144,7 +147,8 @@ namespace Stack_Program
                 string t = treeLnk[i].name.Substring(0, 1).ToString().ToUpper();
 
                 //TreeNode temp = new TreeNode();
-                //temp.Name = t;
+                //temp.Text = t;
+                
                 if (!tree.Nodes.ContainsKey(t))
                 {
                     tree.Nodes.Insert(i, t, t);
@@ -205,6 +209,21 @@ namespace Stack_Program
             formGraphics.Dispose();*/
         }
 
+        private void searchDone_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close(); 
+        }
+
+        private void addProgramToSelection(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Checked)
+                selectedPrograms.Add(treeLnk.Find(delegate (File temp) { return temp.name == e.Node.Text; }));
+            else
+                selectedPrograms.Remove(treeLnk.Find(delegate (File temp) { return temp.name == e.Node.Text; }));
+        }
+
+      
     }
 
 }

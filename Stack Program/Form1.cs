@@ -97,7 +97,7 @@ namespace Stack_Program
             {
                 File temp = new File(d.FileNames[i]);
                 if (selectedProfile.containsFile(temp))
-                    MessageBox.Show("Questo programma è già presente in questo profilo");
+                    MessageBox.Show("Il programma "+ temp.name +"è già presente in questo profilo");
                 else
                     selectedProfile.addFile(temp, this);
                 
@@ -123,9 +123,27 @@ namespace Stack_Program
 
         private void searchApp_Click(object sender, EventArgs e)
         {
+            using(var searchAppForm = new Stack_Program.searchAppForm()){
 
-            Form searchAppForm = new Stack_Program.searchAppForm();
-            searchAppForm.Show();
+                var result = searchAppForm.ShowDialog();
+                if( result == DialogResult.OK)
+                {
+                    List<File> temp =  searchAppForm.selectedPrograms;
+                    foreach(File f in temp)
+                    {
+                        if (selectedProfile.containsFile(f))
+                            MessageBox.Show("Il programma " + f.name + "è già presente in questo profilo");
+                        else
+                            selectedProfile.addFile( f, this );
+                    }
+
+                    enableButtons();
+                    
+                }
+            }
+            
+            
+            
         }
 
         private void runAll_Click(object sender, EventArgs e)
