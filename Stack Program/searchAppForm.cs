@@ -92,6 +92,10 @@ namespace Stack_Program
 
             foreach (string i in concat)
             {
+
+                if (!System.IO.Directory.Exists(i))
+                        continue;
+
                 string[] t = Directory.GetFiles(i);
 
                 
