@@ -354,6 +354,44 @@ namespace Stack_Program
             return grid;
         }
 
+        public static string CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
+        {
+            string[] stringSeparators = new string[] { " --" };
+            string[] arguments = targetFileLocation.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+            targetFileLocation = arguments[0].Replace("\"","");
+            arguments = arguments.Skip(1).ToArray();
+            
+            string shortcutLocation = System.IO.Path.Combine(shortcutPath + "\\Stack Program", shortcutName + ".lnk");
+            WshShell shell = new WshShell();
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
+
+            foreach (string arg in arguments)
+            {
+                shortcut.Arguments += " --"+arg;
+            }
+            
+            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
+            shortcut.Save();                                    // Save the shortcut
+            return shortcutLocation;
+        }
+
+        private void createInk_Click(object sender, EventArgs e)
+        {
+            
+            createLink newLink = new createLink();
+            string shortcutDir = "";
+
+            if (newLink.ShowDialog(this) == DialogResult.OK)
+            {
+                shortcutDir = CreateShortcut(newLink.textBox1.Text, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), newLink.textBox2.Text);
+                newLink.Dispose();
+                File s = new File(shortcutDir);
+                selectedProfile.addFile(s, this);
+            }
+            
+
+        }
+
 
         /*
         private void grid_MouseMove(object sender, MouseEventArgs e)
@@ -468,6 +506,8 @@ namespace Stack_Program
                 row.Cells[0].Value = row.Index + 1;
             }
         }
+
+        
 
 
     }
