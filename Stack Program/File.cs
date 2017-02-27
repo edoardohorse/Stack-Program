@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Stack_Program
 {
@@ -35,7 +36,15 @@ namespace Stack_Program
 
         public void Start()
         {
-            Process.Start(@dir);
+            try
+            {
+
+                Process.Start(@dir);
+                
+            }catch(Exception e)
+            {
+                MessageBox.Show("Impossibile avviare il programma");
+            }
         }
 
         public static void Start(File temp)

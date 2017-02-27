@@ -64,7 +64,7 @@ namespace Stack_Program
             
 
 
-            if( profiles== null)
+            if( profiles == null )
             {
                 profiles = new List<Profile>();
                 this.tempProfile = new Profile("temp");
@@ -202,7 +202,7 @@ namespace Stack_Program
         {
             areButtonsEnabled = deleteAll.Enabled =
                deleteApp.Enabled = runAll.Enabled =
-               runApp.Enabled = addProfile.Enabled = false;
+               runApp.Enabled = /*addProfile.Enabled =*/ false;
         }
 
         private void toggleEnableButtons()
@@ -335,7 +335,7 @@ namespace Stack_Program
 
             profiles = JsonConvert.DeserializeObject<List<Profile>>(str);
 
-            if (profiles.Count == 0) {
+            if (profiles == null || profiles.Count == 0) {
                 profiles = null;
                 return;
             }
