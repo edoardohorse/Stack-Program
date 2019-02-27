@@ -64,7 +64,7 @@ namespace Stack_Program
             
 
 
-            if( profiles == null )
+            if( profiles.Count == 0)
             {
                 profiles = new List<Profile>();
                 this.tempProfile = new Profile("temp");
