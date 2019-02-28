@@ -41,6 +41,7 @@ namespace Stack_Program
 
         private void Form1_Load(object sende, EventArgs e)
         {
+            bool fileExists = false;
             grid = this.Controls.Find("grid1", false).FirstOrDefault() as Grid;
             grid.setGrid();
 
@@ -51,6 +52,7 @@ namespace Stack_Program
             {
                 if( fileAppData.Exists)
                 {
+                    fileExists = true;
                     StreamReader fp = new StreamReader(fileAppData.FullName);
                     string str = fp.ReadToEnd();
                     restoreProfileFromJson( str );
@@ -61,20 +63,17 @@ namespace Stack_Program
             {
                 Directory.CreateDirectory(dirAppData);
             }
-            
 
-
-            if( profiles.Count == 0)
+            if (fileExists && profiles != null)
+            {
+                selectedProfile = profiles[0];
+                enableButtons();
+            }
+            else
             {
                 profiles = new List<Profile>();
                 this.tempProfile = new Profile("temp");
                 selectedProfile = this.tempProfile;
-                
-            }
-            else
-            {
-                selectedProfile = profiles[0];
-                enableButtons();
             }
             
             
