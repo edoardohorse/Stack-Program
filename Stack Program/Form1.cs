@@ -30,6 +30,7 @@ namespace Stack_Program
         FileInfo fileAppData;
         string dirAppData;
         string previousPath = "";
+        bool isClosedAppAfterRunAll = false;
         //        public delegate void returnGrid();
 
         public Form1()
@@ -148,6 +149,9 @@ namespace Stack_Program
         private void runAll_Click(object sender, EventArgs e)
         {
             selectedProfile.runAll();
+
+            if (isClosedAppAfterRunAll)
+                this.Close();
         }
 
         private void deleteApp_Click(object sender, EventArgs e)
@@ -389,6 +393,11 @@ namespace Stack_Program
             }
             
 
+        }
+
+        private void closeAfterCb_CheckedChanged(object sender, EventArgs e)
+        {
+            isClosedAppAfterRunAll = (sender as CheckBox).Checked;
         }
 
 

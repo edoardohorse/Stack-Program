@@ -38,8 +38,9 @@
             this.addProfile = new System.Windows.Forms.Button();
             this.grp = new System.Windows.Forms.GroupBox();
             this.removeProfile = new System.Windows.Forms.Button();
-            this.grid1 = new Stack_Program.Grid();
             this.createInk = new System.Windows.Forms.Button();
+            this.closeAfterCb = new System.Windows.Forms.CheckBox();
+            this.grid1 = new Stack_Program.Grid();
             this.grp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid1)).BeginInit();
             this.SuspendLayout();
@@ -164,6 +165,28 @@
             this.removeProfile.UseVisualStyleBackColor = true;
             this.removeProfile.Click += new System.EventHandler(this.removeProfile_Click);
             // 
+            // createInk
+            // 
+            this.createInk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.createInk.Location = new System.Drawing.Point(442, 45);
+            this.createInk.Name = "createInk";
+            this.createInk.Size = new System.Drawing.Size(141, 29);
+            this.createInk.TabIndex = 11;
+            this.createInk.Text = "Crea collegamento";
+            this.createInk.UseVisualStyleBackColor = true;
+            this.createInk.Click += new System.EventHandler(this.createInk_Click);
+            // 
+            // closeAfterCb
+            // 
+            this.closeAfterCb.AutoSize = true;
+            this.closeAfterCb.Location = new System.Drawing.Point(452, 539);
+            this.closeAfterCb.Name = "closeAfterCb";
+            this.closeAfterCb.Size = new System.Drawing.Size(131, 17);
+            this.closeAfterCb.TabIndex = 12;
+            this.closeAfterCb.Text = "Chiudi dopo avvia tutti";
+            this.closeAfterCb.UseVisualStyleBackColor = true;
+            this.closeAfterCb.CheckedChanged += new System.EventHandler(this.closeAfterCb_CheckedChanged);
+            // 
             // grid1
             // 
             this.grid1.AllowUserToResizeColumns = false;
@@ -179,22 +202,12 @@
             this.grid1.Size = new System.Drawing.Size(418, 557);
             this.grid1.TabIndex = 10;
             // 
-            // createInk
-            // 
-            this.createInk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.createInk.Location = new System.Drawing.Point(442, 45);
-            this.createInk.Name = "createInk";
-            this.createInk.Size = new System.Drawing.Size(141, 29);
-            this.createInk.TabIndex = 11;
-            this.createInk.Text = "Crea collegamento";
-            this.createInk.UseVisualStyleBackColor = true;
-            this.createInk.Click += new System.EventHandler(this.createInk_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(595, 581);
+            this.Controls.Add(this.closeAfterCb);
             this.Controls.Add(this.createInk);
             this.Controls.Add(this.grid1);
             this.Controls.Add(this.grp);
@@ -213,6 +226,7 @@
             this.grp.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -230,6 +244,7 @@
         private System.Windows.Forms.Button removeProfile;
         private Grid grid1;
         private System.Windows.Forms.Button createInk;
+        private System.Windows.Forms.CheckBox closeAfterCb;
     }
 }
 
