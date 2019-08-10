@@ -23,6 +23,45 @@ namespace Stack_Program
 
         List<File> treeLnk = new List<File>();
 
+        public class NodeSorterAZ : IComparer
+        {
+
+            public int Compare(object x, object y)
+            {
+                TreeNode tx = x as TreeNode;
+                TreeNode ty = y as TreeNode;
+
+                string txText = tx.Text.ToString();
+                string tyText = ty.Text.ToString();
+
+
+
+                return String.Compare(txText, tyText);
+
+
+            }
+        }
+
+        public class NodeSorterZA : IComparer
+        {
+
+            public int Compare(object x, object y)
+            {
+                TreeNode tx = x as TreeNode;
+                TreeNode ty = y as TreeNode;
+
+                string txText = tx.Text.ToString();
+                string tyText = ty.Text.ToString();
+
+
+
+                return String.Compare(tyText, txText);
+
+
+            }
+        }
+
+
         public searchAppForm()
         {
             InitializeComponent();
@@ -186,16 +225,28 @@ namespace Stack_Program
                         
                     }
                     else
-                        break;
-                }
+        private void sortByAZBtn_Click(object sender, EventArgs e)
+        {
+            sortTree(true);
+        }
 
-                    
+        private void sortByZABtn_Click(object sender, EventArgs e)
+        {
+            
+            sortTree(false);
+        }
 
-               
-            }
+        private void sortTree(bool asc = true)
+        {
+            tree.Visible = false;
 
-            tree.ExpandAll();
+            if(asc)
+                tree.TreeViewNodeSorter = new NodeSorterAZ();
+            else
+                tree.TreeViewNodeSorter = new NodeSorterZA();
+
             tree.Nodes[0].EnsureVisible();
+            tree.Visible = true;
         }
 
         public void provaDraw()
