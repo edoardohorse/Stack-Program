@@ -216,15 +216,17 @@ namespace Stack_Program
             for (int i = 0; i < alphabet.Count; i++)
             {
 
-                for (; c < treeLnk.Count; c++)
-                {
-                    if (treeLnk[c].name.ToUpperInvariant().StartsWith( alphabet[i] ))
-                    {
-                        tree.Nodes[i].Nodes.Add(treeLnk[ c ].name);
-                        tree.Nodes[i].Nodes[tree.Nodes[i].Nodes.Count -1].ToolTipText = treeLnk[c].dir.ToString();
-                        
-                    }
-                    else
+        private void expandeAllTree_Click(object sender, EventArgs e)
+        {
+            tree.ExpandAll();
+            tree.Nodes[0].EnsureVisible();
+        }
+
+        private void collapseAllTree_Click(object sender, EventArgs e)
+        {
+            tree.CollapseAll();
+        }
+
         private void sortByAZBtn_Click(object sender, EventArgs e)
         {
             sortTree(true);
