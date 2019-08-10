@@ -1,4 +1,4 @@
-﻿namespace Stack_Program
+namespace Stack_Program
 {
     partial class searchAppForm
     {
@@ -30,6 +30,7 @@
         {
             this.tree = new System.Windows.Forms.TreeView();
             this.searchDone = new System.Windows.Forms.Button();
+            this.linkFoundLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tree
@@ -58,11 +59,22 @@
             this.searchDone.UseVisualStyleBackColor = true;
             this.searchDone.Click += new System.EventHandler(this.searchDone_Click);
             // 
+            // 
+            // linkFoundLbl
+            // 
+            this.linkFoundLbl.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.linkFoundLbl.Location = new System.Drawing.Point(356, 625);
+            this.linkFoundLbl.Name = "linkFoundLbl";
+            this.linkFoundLbl.Size = new System.Drawing.Size(186, 13);
+            this.linkFoundLbl.TabIndex = 8;
+            this.linkFoundLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // searchAppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(554, 657);
+            this.Controls.Add(this.linkFoundLbl);
             this.Controls.Add(this.searchDone);
             this.Controls.Add(this.tree);
             this.Name = "searchAppForm";
