@@ -1,4 +1,4 @@
-namespace Stack_Program
+﻿namespace Stack_Program
 {
     partial class searchAppForm
     {
@@ -37,6 +37,7 @@ namespace Stack_Program
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.sortByZABtn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.listFolderCb = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -48,10 +49,10 @@ namespace Stack_Program
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tree.CheckBoxes = true;
             this.tree.HotTracking = true;
-            this.tree.Location = new System.Drawing.Point(12, 71);
+            this.tree.Location = new System.Drawing.Point(12, 115);
             this.tree.Name = "tree";
             this.tree.ShowNodeToolTips = true;
-            this.tree.Size = new System.Drawing.Size(530, 537);
+            this.tree.Size = new System.Drawing.Size(530, 493);
             this.tree.TabIndex = 3;
             this.tree.Visible = false;
             this.tree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.addProgramToSelection);
@@ -86,7 +87,6 @@ namespace Stack_Program
             this.expandeAllTree.Text = "Espandi";
             this.expandeAllTree.UseVisualStyleBackColor = true;
             this.expandeAllTree.Click += new System.EventHandler(this.expandeAllTree_Click);
-            // 
             // 
             // linkFoundLbl
             // 
@@ -183,5 +183,6 @@ namespace Stack_Program
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button sortByZABtn;
+        private System.Windows.Forms.CheckBox listFolderCb;
     }
 }
