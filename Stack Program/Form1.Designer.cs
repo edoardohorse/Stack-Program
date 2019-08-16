@@ -48,7 +48,7 @@
             // addProgram
             // 
             this.addProgram.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addProgram.Location = new System.Drawing.Point(442, 12);
+            this.addProgram.Location = new System.Drawing.Point(451, 12);
             this.addProgram.Name = "addProgram";
             this.addProgram.Size = new System.Drawing.Size(141, 29);
             this.addProgram.TabIndex = 0;
@@ -60,7 +60,7 @@
             // 
             this.runApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.runApp.Enabled = false;
-            this.runApp.Location = new System.Drawing.Point(442, 80);
+            this.runApp.Location = new System.Drawing.Point(451, 80);
             this.runApp.Name = "runApp";
             this.runApp.Size = new System.Drawing.Size(141, 29);
             this.runApp.TabIndex = 2;
@@ -72,7 +72,7 @@
             // 
             this.deleteApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteApp.Enabled = false;
-            this.deleteApp.Location = new System.Drawing.Point(442, 148);
+            this.deleteApp.Location = new System.Drawing.Point(451, 148);
             this.deleteApp.Name = "deleteApp";
             this.deleteApp.Size = new System.Drawing.Size(141, 29);
             this.deleteApp.TabIndex = 3;
@@ -84,7 +84,7 @@
             // 
             this.deleteAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteAll.Enabled = false;
-            this.deleteAll.Location = new System.Drawing.Point(442, 182);
+            this.deleteAll.Location = new System.Drawing.Point(451, 182);
             this.deleteAll.Name = "deleteAll";
             this.deleteAll.Size = new System.Drawing.Size(141, 29);
             this.deleteAll.TabIndex = 4;
@@ -96,7 +96,7 @@
             // 
             this.runAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.runAll.Enabled = false;
-            this.runAll.Location = new System.Drawing.Point(442, 114);
+            this.runAll.Location = new System.Drawing.Point(451, 114);
             this.runAll.Name = "runAll";
             this.runAll.Size = new System.Drawing.Size(141, 29);
             this.runAll.TabIndex = 5;
@@ -107,7 +107,7 @@
             // searchApp
             // 
             this.searchApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchApp.Location = new System.Drawing.Point(442, 216);
+            this.searchApp.Location = new System.Drawing.Point(451, 216);
             this.searchApp.Name = "searchApp";
             this.searchApp.Size = new System.Drawing.Size(141, 29);
             this.searchApp.TabIndex = 6;
@@ -146,7 +146,7 @@
             this.grp.Controls.Add(this.removeProfile);
             this.grp.Controls.Add(this.addProfile);
             this.grp.Controls.Add(this.listProfiles);
-            this.grp.Location = new System.Drawing.Point(436, 263);
+            this.grp.Location = new System.Drawing.Point(445, 263);
             this.grp.Name = "grp";
             this.grp.Size = new System.Drawing.Size(156, 251);
             this.grp.TabIndex = 9;
@@ -168,7 +168,7 @@
             // createInk
             // 
             this.createInk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.createInk.Location = new System.Drawing.Point(442, 45);
+            this.createInk.Location = new System.Drawing.Point(451, 45);
             this.createInk.Name = "createInk";
             this.createInk.Size = new System.Drawing.Size(141, 29);
             this.createInk.TabIndex = 11;
@@ -178,8 +178,9 @@
             // 
             // closeAfterCb
             // 
+            this.closeAfterCb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeAfterCb.AutoSize = true;
-            this.closeAfterCb.Location = new System.Drawing.Point(452, 539);
+            this.closeAfterCb.Location = new System.Drawing.Point(461, 539);
             this.closeAfterCb.Name = "closeAfterCb";
             this.closeAfterCb.Size = new System.Drawing.Size(131, 17);
             this.closeAfterCb.TabIndex = 12;
@@ -199,14 +200,14 @@
             this.grid1.isSettedGrid = false;
             this.grid1.Location = new System.Drawing.Point(12, 12);
             this.grid1.Name = "grid1";
-            this.grid1.Size = new System.Drawing.Size(418, 557);
+            this.grid1.Size = new System.Drawing.Size(427, 557);
             this.grid1.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 581);
+            this.ClientSize = new System.Drawing.Size(604, 581);
             this.Controls.Add(this.closeAfterCb);
             this.Controls.Add(this.createInk);
             this.Controls.Add(this.grid1);
@@ -217,6 +218,7 @@
             this.Controls.Add(this.deleteApp);
             this.Controls.Add(this.runApp);
             this.Controls.Add(this.addProgram);
+            this.MinimumSize = new System.Drawing.Size(620, 620);
             this.Name = "Form1";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

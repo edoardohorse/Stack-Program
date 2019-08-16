@@ -52,7 +52,7 @@
             this.tree.Location = new System.Drawing.Point(12, 115);
             this.tree.Name = "tree";
             this.tree.ShowNodeToolTips = true;
-            this.tree.Size = new System.Drawing.Size(530, 493);
+            this.tree.Size = new System.Drawing.Size(530, 487);
             this.tree.TabIndex = 3;
             this.tree.Visible = false;
             this.tree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.addProgramToSelection);
@@ -90,8 +90,8 @@
             // 
             // linkFoundLbl
             // 
-            this.linkFoundLbl.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.linkFoundLbl.Location = new System.Drawing.Point(356, 625);
+            this.linkFoundLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkFoundLbl.Location = new System.Drawing.Point(356, 622);
             this.linkFoundLbl.Name = "linkFoundLbl";
             this.linkFoundLbl.Size = new System.Drawing.Size(186, 13);
             this.linkFoundLbl.TabIndex = 8;
@@ -157,12 +157,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(554, 657);
+            this.ClientSize = new System.Drawing.Size(554, 651);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.linkFoundLbl);
             this.Controls.Add(this.searchDone);
             this.Controls.Add(this.tree);
+            this.MinimumSize = new System.Drawing.Size(570, 690);
             this.Name = "searchAppForm";
             this.Text = "Sfoglia fra i programmi";
             this.Load += new System.EventHandler(this.searchApp_load);
