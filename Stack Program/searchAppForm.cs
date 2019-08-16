@@ -256,10 +256,30 @@ namespace Stack_Program
 
         private void addProgramToSelection(object sender, TreeViewEventArgs e)
         {
-            if (e.Node.Checked)
-                selectedPrograms.Add(lnkList.Find(delegate (File temp) { return temp.name == e.Node.Text; }));
-            else
-                selectedPrograms.Remove(lnkList.Find(delegate (File temp) { return temp.name == e.Node.Text; }));
+
+            if (e.Action != TreeViewAction.Unknown) {
+
+                if (e.Node.Level == 0) {
+                    foreach (TreeNode n in e.Node.Nodes) {
+                        n.Checked = e.Node.Checked;
+                        addProgramm(n);
+                    }
+                }
+                else {
+                    addProgramm(e.Node);
+                }
+            
+                
+
+            }
+
+            void addProgramm(TreeNode n)
+            {
+                if (n.Checked)
+                    selectedPrograms.Add(lnkList.Find(delegate (File temp) { return temp.name == n.Text; }));
+                else
+                    selectedPrograms.Remove(lnkList.Find(delegate (File temp) { return temp.name == n.Text; }));
+            }
         }
 
         private void expandeAllTree_Click(object sender, EventArgs e)
@@ -317,6 +337,10 @@ namespace Stack_Program
             
             
         }
+
+
+       
+  
     }
 
 }
