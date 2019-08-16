@@ -270,6 +270,10 @@ namespace Stack_Program
                         nodeParent.Checked = true;
 
                     }
+                    // Set node parent as indeterminate (partial) if at least one of its children is selected
+                    else if (nodeParent.Nodes.Count > 0 && nChecked < nodeParent.Nodes.Count) {
+                        nodeParent.StateImageIndex = 2;
+                    }
                 }
 
 
@@ -316,11 +320,18 @@ namespace Stack_Program
 
             void addProgramm(TreeNode n)
             {
-                if (n.Checked)
-                    selectedPrograms.Add(lnkList.Find(delegate (File temp) { return temp.name == n.Text; }));
-                else
-                    selectedPrograms.Remove(lnkList.Find(delegate (File temp) { return temp.name == n.Text; }));
+
+                if (n.Checked) {
+                    File temp = lnkList.Find(lnk => lnk.name == n.Text);
+                    selectedPrograms.Add(temp);
+                }
+                else {
+                    File temp = selectedPrograms.Find(lnk => lnk.name == n.Text);
+                    selectedPrograms.Remove(temp);
+                }
+                    
             }
+            
         }
 
         private void expandeAllTree_Click(object sender, EventArgs e)
