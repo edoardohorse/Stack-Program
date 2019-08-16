@@ -67,14 +67,15 @@ namespace Stack_Program
         }
 
 
-        public searchAppForm()
+        public searchAppForm(List<File> filesAlreadyInProfile)
         {
             InitializeComponent();
+
+            selectedPrograms.AddRange(filesAlreadyInProfile);
             //lbInfo.BackColor = Color.Transparent;
             // backgroundWorker1.WorkerReportsProgress = true;
             // backgroundWorker1.WorkerSupportsCancellation = true;
         }
-
 
 
         private delegate void DelegateSearchDone();
@@ -114,7 +115,7 @@ namespace Stack_Program
             getInstalledApps();
 
             populateTree(lnkDictionaryByAlphabet);
-            
+
             tree.Visible = true;
         //    provaDraw();
 
@@ -222,20 +223,67 @@ namespace Stack_Program
         {
 
             tree.Visible = false;
+            bool alreadyAdded = false;
+            int nAlreayAdded = selectedPrograms.Count;
 
             foreach (KeyValuePair<string, List<File>> pair in dict)
             {
+
+                if (nAlreayAdded <= 0) {
+                    alreadyAdded = true;
+                }
+
                 TreeNode nodeParent = new TreeNode(pair.Key);
-                pair.Value.ForEach(lnk =>
-                {
+                int nChecked = 0;
+                
+
+                pair.Value.ForEach(lnk => {
                     TreeNode child = new TreeNode(lnk.name);
+
+                    if (selectedPrograms.Count > 0 && !alreadyAdded) { 
+
+                         File[] fileAlreadyInProfile = selectedPrograms.Where(
+                                                            s => s.name.Equals(lnk.name)).ToArray();
+
+                        if (fileAlreadyInProfile.Length > 0) {
+                            child.Checked = true;
+                            nChecked++;
+                        }
+
+                        
+                    }
+
+
                     child.ToolTipText = lnk.dir.ToString();
                     nodeParent.Nodes.Add(child);
                 
                 });
 
-                tree.Nodes.Add(nodeParent);
+
+
+                if (nAlreayAdded > 0) {
+                    
+                    nAlreayAdded -= nChecked;
+
+                    // Check node parent if all of its children are selected
+                    if (nodeParent.Nodes.Count == nChecked) {
+                        nodeParent.Checked = true;
+
+                    }
+                    // Set node parent as indeterminate (partial) if at least one of its children is selected
+                    else if (nodeParent.Nodes.Count > 0 && nChecked < nodeParent.Nodes.Count) {
+                        
+                        nodeParent.BackColor = Color.Beige;
+
+                        //nodeParent.Graphics.FillRectangle(Brushes.Green, NodeBounds(e.Node));
+                    }
+                }
+
+
                 
+                tree.Nodes.Add(nodeParent);
+
+
 
             }
 

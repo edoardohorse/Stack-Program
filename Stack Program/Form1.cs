@@ -123,7 +123,7 @@ namespace Stack_Program
 
         private void searchApp_Click(object sender, EventArgs e)
         {
-            using(var searchAppForm = new Stack_Program.searchAppForm()){
+            using(var searchAppForm = new Stack_Program.searchAppForm(selectedProfile.files)){
 
                 var result = searchAppForm.ShowDialog();
                 if( result == DialogResult.OK)

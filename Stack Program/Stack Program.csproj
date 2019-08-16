@@ -121,6 +121,9 @@
     <Compile Include="searchAppForm.Designer.cs">
       <DependentUpon>searchAppForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TriStateCheckBoxTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="createLink.resx">
       <DependentUpon>createLink.cs</DependentUpon>
     </EmbeddedResource>

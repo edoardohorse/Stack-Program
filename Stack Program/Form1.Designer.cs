@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.addProgram = new System.Windows.Forms.Button();
             this.runApp = new System.Windows.Forms.Button();
             this.deleteApp = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             this.createInk = new System.Windows.Forms.Button();
             this.closeAfterCb = new System.Windows.Forms.CheckBox();
             this.grid1 = new Stack_Program.Grid();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.grp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid1)).BeginInit();
             this.SuspendLayout();
@@ -203,6 +205,11 @@
             this.grid1.Size = new System.Drawing.Size(427, 557);
             this.grid1.TabIndex = 10;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -247,6 +254,7 @@
         private Grid grid1;
         private System.Windows.Forms.Button createInk;
         private System.Windows.Forms.CheckBox closeAfterCb;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 
