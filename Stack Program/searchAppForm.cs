@@ -270,13 +270,6 @@ namespace Stack_Program
                         nodeParent.Checked = true;
 
                     }
-                    // Set node parent as indeterminate (partial) if at least one of its children is selected
-                    else if (nodeParent.Nodes.Count > 0 && nChecked < nodeParent.Nodes.Count) {
-                        
-                        nodeParent.BackColor = Color.Beige;
-
-                        //nodeParent.Graphics.FillRectangle(Brushes.Green, NodeBounds(e.Node));
-                    }
                 }
 
 

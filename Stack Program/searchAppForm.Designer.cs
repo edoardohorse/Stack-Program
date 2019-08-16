@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tree = new System.Windows.Forms.TreeView();
+            this.components = new System.ComponentModel.Container();
             this.searchDone = new System.Windows.Forms.Button();
             this.collapseAllTree = new System.Windows.Forms.Button();
             this.expandeAllTree = new System.Windows.Forms.Button();
@@ -38,24 +38,10 @@
             this.sortByZABtn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.listFolderCb = new System.Windows.Forms.CheckBox();
+            this.tree = new My.Examples.UserControls.TriStateTreeView();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tree
-            // 
-            this.tree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tree.CheckBoxes = true;
-            this.tree.HotTracking = true;
-            this.tree.Location = new System.Drawing.Point(12, 115);
-            this.tree.Name = "tree";
-            this.tree.ShowNodeToolTips = true;
-            this.tree.Size = new System.Drawing.Size(530, 487);
-            this.tree.TabIndex = 3;
-            this.tree.Visible = false;
-            this.tree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.addProgramToSelection);
             // 
             // searchDone
             // 
@@ -91,7 +77,7 @@
             // linkFoundLbl
             // 
             this.linkFoundLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkFoundLbl.Location = new System.Drawing.Point(356, 622);
+            this.linkFoundLbl.Location = new System.Drawing.Point(386, 622);
             this.linkFoundLbl.Name = "linkFoundLbl";
             this.linkFoundLbl.Size = new System.Drawing.Size(186, 13);
             this.linkFoundLbl.TabIndex = 8;
@@ -153,17 +139,30 @@
             this.listFolderCb.UseVisualStyleBackColor = true;
             this.listFolderCb.CheckedChanged += new System.EventHandler(this.listFolderCb_CheckedChanged);
             // 
+            // tree
+            // 
+            this.tree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tree.CheckBoxes = true;
+            this.tree.HotTracking = true;
+            this.tree.Location = new System.Drawing.Point(12, 115);
+            this.tree.Name = "tree";
+            this.tree.Size = new System.Drawing.Size(560, 487);
+            this.tree.TabIndex = 3;
+            this.tree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.addProgramToSelection);
+            // 
             // searchAppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(554, 651);
+            this.ClientSize = new System.Drawing.Size(584, 651);
+            this.Controls.Add(this.tree);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.linkFoundLbl);
             this.Controls.Add(this.searchDone);
-            this.Controls.Add(this.tree);
-            this.MinimumSize = new System.Drawing.Size(570, 690);
+            this.MinimumSize = new System.Drawing.Size(600, 690);
             this.Name = "searchAppForm";
             this.Text = "Sfoglia fra i programmi";
             this.Load += new System.EventHandler(this.searchApp_load);
@@ -175,7 +174,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.TreeView tree;
         private System.Windows.Forms.Button searchDone;
         private System.Windows.Forms.Button collapseAllTree;
         private System.Windows.Forms.Button expandeAllTree;
@@ -185,5 +183,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button sortByZABtn;
         private System.Windows.Forms.CheckBox listFolderCb;
+        private My.Examples.UserControls.TriStateTreeView tree;
     }
 }
