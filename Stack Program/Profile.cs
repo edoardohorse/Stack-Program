@@ -23,18 +23,18 @@ namespace Stack_Program
             
         }
 
-        public void addFile( File temp, Form1 main)
+        public void addFile( File toAdd, Form1 main)
         {
             
-            files.Add(temp);
+            files.Add(toAdd);
 
             Grid grid = main.returnGrid();
 
             int i = 0;
             grid.Rows.Add();
             grid.Rows[grid.RowCount - 1].Cells[i++].Value = files.Count.ToString();
-            grid.Rows[grid.RowCount - 1].Cells[i++].Value = temp.name.ToString();
-            grid.Rows[grid.RowCount - 1].Cells[i++].Value = temp.dir.ToString();
+            grid.Rows[grid.RowCount - 1].Cells[i++].Value = toAdd.name.ToString();
+            grid.Rows[grid.RowCount - 1].Cells[i++].Value = toAdd.dir.ToString();
 
             countFiles = files.Count;
         }
@@ -79,6 +79,23 @@ namespace Stack_Program
         public void removeFile(int index)
         {
             this.files.Remove(this.files[index]);
+        }
+
+        public void removeFile(File toRemove, Form1 main)
+        {
+            Grid grid = main.returnGrid();
+
+            foreach(DataGridViewRow row in grid.Rows) {
+                if(row.Cells[1].Value.Equals(toRemove.name) ) {
+                    grid.Rows.Remove(row);
+                }
+            }
+
+            this.files.Remove(toRemove);
+
+
+
+            countFiles = files.Count;
         }
 
         public string serialize()

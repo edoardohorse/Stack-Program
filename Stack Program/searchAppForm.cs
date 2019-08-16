@@ -257,27 +257,19 @@ namespace Stack_Program
                     child.ToolTipText = lnk.dir.ToString();
                     nodeParent.Nodes.Add(child);
                 
+                    
                 });
 
 
+                nAlreayAdded -= nChecked;
 
-                if (nAlreayAdded > 0) {
-                    
-                    nAlreayAdded -= nChecked;
-
-                    // Check node parent if all of its children are selected
-                    if (nodeParent.Nodes.Count == nChecked) {
-                        nodeParent.Checked = true;
-
-                    }
-                    // Set node parent as indeterminate (partial) if at least one of its children is selected
-                    else if (nodeParent.Nodes.Count > 0 && nChecked < nodeParent.Nodes.Count) {
-                        nodeParent.StateImageIndex = 2;
-                    }
+                if (nodeParent.Nodes.Count == nChecked) {
+                    nodeParent.Checked = true;
+                }
+                else if(nChecked > 0){
+                    nodeParent.StateImageIndex = 2;
                 }
 
-
-                
                 tree.Nodes.Add(nodeParent);
 
 
@@ -323,11 +315,14 @@ namespace Stack_Program
 
                 if (n.Checked) {
                     File temp = lnkList.Find(lnk => lnk.name == n.Text);
-                    selectedPrograms.Add(temp);
+                    if(selectedPrograms.Find(lnk => lnk.name == temp.name) == null)
+                        selectedPrograms.Add(temp);
                 }
                 else {
                     File temp = selectedPrograms.Find(lnk => lnk.name == n.Text);
-                    selectedPrograms.Remove(temp);
+                    bool res = selectedPrograms.Remove(temp);
+
+
                 }
                     
             }

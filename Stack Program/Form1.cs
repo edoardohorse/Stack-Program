@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -129,11 +129,20 @@ namespace Stack_Program
                 if( result == DialogResult.OK)
                 {
                     List<File> temp =  searchAppForm.selectedPrograms;
-                    foreach(File f in temp)
+
+                    List<File> toRemove = selectedProfile.files.Except(temp).ToList();
+                    temp = temp.Except(toRemove).ToList();
+
+                    if (toRemove.Count > 0) {
+                        foreach (File r in toRemove) {
+                            selectedProfile.removeFile(r, this);
+                        }
+                    }
+
+
+                    foreach (File f in temp)
                     {
-                        if (selectedProfile.containsFile(f))
-                            MessageBox.Show("Il programma " + f.name + "è già presente in questo profilo");
-                        else
+                        if (!selectedProfile.containsFile(f))
                             selectedProfile.addFile( f, this );
                     }
 
