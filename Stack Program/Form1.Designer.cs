@@ -43,6 +43,7 @@
             this.closeAfterCb = new System.Windows.Forms.CheckBox();
             this.grid1 = new Stack_Program.Grid();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exportBtn = new System.Windows.Forms.Button();
             this.grp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid1)).BeginInit();
             this.SuspendLayout();
@@ -123,11 +124,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listProfiles.FormattingEnabled = true;
-            this.listProfiles.Location = new System.Drawing.Point(6, 89);
+            this.listProfiles.Location = new System.Drawing.Point(6, 128);
             this.listProfiles.Name = "listProfiles";
             this.listProfiles.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listProfiles.ScrollAlwaysVisible = true;
-            this.listProfiles.Size = new System.Drawing.Size(144, 147);
+            this.listProfiles.Size = new System.Drawing.Size(144, 134);
             this.listProfiles.TabIndex = 7;
             this.listProfiles.SelectedIndexChanged += new System.EventHandler(this.listProfiles_SelectedIndexChanged);
             // 
@@ -145,12 +146,13 @@
             // grp
             // 
             this.grp.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.grp.Controls.Add(this.exportBtn);
             this.grp.Controls.Add(this.removeProfile);
             this.grp.Controls.Add(this.addProfile);
             this.grp.Controls.Add(this.listProfiles);
-            this.grp.Location = new System.Drawing.Point(445, 263);
+            this.grp.Location = new System.Drawing.Point(445, 252);
             this.grp.Name = "grp";
-            this.grp.Size = new System.Drawing.Size(156, 251);
+            this.grp.Size = new System.Drawing.Size(156, 281);
             this.grp.TabIndex = 9;
             this.grp.TabStop = false;
             this.grp.Text = "Profili";
@@ -210,6 +212,17 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // exportBtn
+            // 
+            this.exportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.exportBtn.Location = new System.Drawing.Point(17, 89);
+            this.exportBtn.Name = "exportBtn";
+            this.exportBtn.Size = new System.Drawing.Size(120, 29);
+            this.exportBtn.TabIndex = 13;
+            this.exportBtn.Text = "Esporta profili";
+            this.exportBtn.UseVisualStyleBackColor = true;
+            this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -230,7 +243,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Stack Program";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.saveProfiles);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.saveProfiles_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.grp.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid1)).EndInit();
@@ -255,6 +268,7 @@
         private System.Windows.Forms.Button createInk;
         private System.Windows.Forms.CheckBox closeAfterCb;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button exportBtn;
     }
 }
 

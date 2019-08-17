@@ -304,26 +304,19 @@ namespace Stack_Program
                 listProfiles.SelectedIndex = index-1;
         }
 
-        private void saveProfiles(object sender, FormClosingEventArgs e)
+        private void saveProfiles_FormClosing(object sender, FormClosingEventArgs e)
         {
+            saveProfiles();    
 
-    /*        JObject arr = new JObject();
-            foreach ( Profile temp in profiles)
-            {
-                
-                
-                arr.Add(temp.name,temp.serialize());
-            }*/
-            //string str =  JsonConvert.SerializeObject(arr);
+        }
+        
+        private void saveProfiles()
+        {
             string str = JsonConvert.SerializeObject(profiles);
 
             StreamWriter ft = new StreamWriter(fileAppData.FullName);
             ft.Write(str);
             ft.Close();
-
-
-
-
         }
 
         private void listProfiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -407,6 +400,19 @@ namespace Stack_Program
         private void closeAfterCb_CheckedChanged(object sender, EventArgs e)
         {
             isClosedAppAfterRunAll = (sender as CheckBox).Checked;
+        }
+
+        private void exportBtn_Click(object sender, EventArgs e)
+        {
+            saveProfiles();
+            SaveFileDialog d = new SaveFileDialog();
+            d.Filter = "File JSON|*.json";
+            d.Title = "Salva il file di configurazione";
+            d.ShowDialog();
+
+            string newLocation = d.FileName;
+            if(newLocation != "")
+               fileAppData.CopyTo(newLocation, true);
         }
 
 
