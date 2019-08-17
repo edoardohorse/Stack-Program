@@ -205,16 +205,16 @@ namespace Stack_Program
 
         private void enableButtons()
         {
-            areButtonsEnabled = deleteAll.Enabled =
-                deleteApp.Enabled = runAll.Enabled = 
-                runApp.Enabled = addProfile.Enabled = true;
+            areButtonsEnabled = deleteAllBtn.Enabled =
+                deleteAppBtn.Enabled = runAllBtn.Enabled = 
+                runAppBtn.Enabled = addProfileBtn.Enabled = true;
         }
 
         private void disableButtons()
         {
-            areButtonsEnabled = deleteAll.Enabled =
-               deleteApp.Enabled = runAll.Enabled =
-               runApp.Enabled = /*addProfile.Enabled =*/ false;
+            areButtonsEnabled = deleteAllBtn.Enabled =
+               deleteAppBtn.Enabled = runAllBtn.Enabled =
+               runAppBtn.Enabled = /*addProfile.Enabled =*/ false;
         }
 
         private void toggleEnableButtons()
@@ -280,7 +280,7 @@ namespace Stack_Program
 
 
             if( listProfiles.Items.Count > 0 )
-                removeProfile.Enabled = true;
+                removeProfileBtn.Enabled = true;
 
 
             
@@ -299,7 +299,7 @@ namespace Stack_Program
                 
             }
             if (listProfiles.Items.Count == 0)
-                removeProfile.Enabled = false;
+                removeProfileBtn.Enabled = false;
             else
                 listProfiles.SelectedIndex = index-1;
         }
@@ -351,7 +351,7 @@ namespace Stack_Program
 
             profiles[0].addProfileToGrid(this);
             listProfiles.SelectedIndex = 0;
-            removeProfile.Enabled = true;
+            removeProfileBtn.Enabled = true;
         }
 
         public Grid returnGrid()
