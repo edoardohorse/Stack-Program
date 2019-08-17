@@ -207,14 +207,16 @@ namespace Stack_Program
         {
             areButtonsEnabled = deleteAllBtn.Enabled =
                 deleteAppBtn.Enabled = runAllBtn.Enabled = 
-                runAppBtn.Enabled = addProfileBtn.Enabled = true;
+                runAppBtn.Enabled = addProfileBtn.Enabled =
+                disableAppBtn.Enabled = enableAppBtn.Enabled =          true;
         }
 
         private void disableButtons()
         {
             areButtonsEnabled = deleteAllBtn.Enabled =
                deleteAppBtn.Enabled = runAllBtn.Enabled =
-               runAppBtn.Enabled = /*addProfile.Enabled =*/ false;
+               runAppBtn.Enabled = /*addProfile.Enabled =*/
+               disableAppBtn.Enabled = enableAppBtn.Enabled = false;
         }
 
         private void toggleEnableButtons()
@@ -415,6 +417,35 @@ namespace Stack_Program
                fileAppData.CopyTo(newLocation, true);
         }
 
+        private void enableAppBtn_Click(object sender, EventArgs e)
+        {
+            foreach(DataGridViewRow rowSelected in grid.SelectedRows) {
+                toggleEnableDisableApp(rowSelected, true);
+                selectedProfile.enaleFile(rowSelected.Index);
+            }
+        }
+                
+
+        private void disableRowBtn_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow rowSelected in grid.SelectedRows) {
+                toggleEnableDisableApp(rowSelected, false);
+                selectedProfile.disableFile(rowSelected.Index);
+            }
+        }
+
+        public void toggleEnableDisableApp(DataGridViewRow row, bool enabled)
+        {
+            if (enabled) {
+                row.DefaultCellStyle.BackColor = Color.White;
+            }
+            else {
+                row.DefaultCellStyle.BackColor = Color.LightGray;
+                
+            }
+
+            row.Selected = false;
+        }
 
         /*
         private void grid_MouseMove(object sender, MouseEventArgs e)
@@ -503,7 +534,7 @@ namespace Stack_Program
             this.AllowUserToResizeRows = false;
             this.ShowCellToolTips = true;
             this.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.MultiSelect = false;
+            this.MultiSelect = true;
             this.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.AllowUserToOrderColumns = true;
 

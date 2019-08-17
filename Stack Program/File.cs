@@ -17,6 +17,7 @@ namespace Stack_Program
         public string name;
         public string dir;
         public string parentDir;
+        public bool   enabled = true;
 
         public File(string dir)
         {
@@ -36,6 +37,9 @@ namespace Stack_Program
 
         public void Start()
         {
+            if (!this.enabled)
+                return;
+
             try
             {
 
@@ -49,6 +53,9 @@ namespace Stack_Program
 
         public static void Start(File temp)
         {
+            if (!temp.enabled)
+                return;
+
             Process.Start(@temp.dir);
         }
         
