@@ -49,10 +49,14 @@ namespace Stack_Program
             foreach( File temp in files)
             {
                 int i = 0;
-                grid.Rows.Add();
-                grid.Rows[grid.RowCount - 1].Cells[i++].Value = "";
-                grid.Rows[grid.RowCount - 1].Cells[i++].Value = temp.name.ToString();
-                grid.Rows[grid.RowCount - 1].Cells[i++].Value = temp.dir.ToString();
+                int indexAdded = grid.Rows.Add();
+                DataGridViewRow row = grid.Rows[indexAdded];
+                row.Cells[i++].Value = "";
+                row.Cells[i++].Value = temp.name.ToString();
+                row.Cells[i++].Value = temp.dir.ToString();
+
+                if (!temp.enabled)   // Se disabilitato
+                    main.toggleEnableDisableApp(row, false);
 
                 grid.updateIndex();
             }
@@ -103,6 +107,17 @@ namespace Stack_Program
            return JsonConvert.SerializeObject( files );
         }
 
+        public void enaleFile(int index)
+        {
+            files[index].enabled = true;
+        }
+
+        public void disableFile(int index)
+        {
+            files[index].enabled = false;
+        }
+
+        
 
         public bool containsFile(File temp)
         {

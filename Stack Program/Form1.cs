@@ -205,16 +205,18 @@ namespace Stack_Program
 
         private void enableButtons()
         {
-            areButtonsEnabled = deleteAll.Enabled =
-                deleteApp.Enabled = runAll.Enabled = 
-                runApp.Enabled = addProfile.Enabled = true;
+            areButtonsEnabled = deleteAllBtn.Enabled =
+                deleteAppBtn.Enabled = runAllBtn.Enabled = 
+                runAppBtn.Enabled = addProfileBtn.Enabled =
+                disableAppBtn.Enabled = enableAppBtn.Enabled =          true;
         }
 
         private void disableButtons()
         {
-            areButtonsEnabled = deleteAll.Enabled =
-               deleteApp.Enabled = runAll.Enabled =
-               runApp.Enabled = /*addProfile.Enabled =*/ false;
+            areButtonsEnabled = deleteAllBtn.Enabled =
+               deleteAppBtn.Enabled = runAllBtn.Enabled =
+               runAppBtn.Enabled = /*addProfile.Enabled =*/
+               disableAppBtn.Enabled = enableAppBtn.Enabled = false;
         }
 
         private void toggleEnableButtons()
@@ -280,7 +282,7 @@ namespace Stack_Program
 
 
             if( listProfiles.Items.Count > 0 )
-                removeProfile.Enabled = true;
+                removeProfileBtn.Enabled = true;
 
 
             
@@ -299,31 +301,24 @@ namespace Stack_Program
                 
             }
             if (listProfiles.Items.Count == 0)
-                removeProfile.Enabled = false;
+                removeProfileBtn.Enabled = false;
             else
                 listProfiles.SelectedIndex = index-1;
         }
 
-        private void saveProfiles(object sender, FormClosingEventArgs e)
+        private void saveProfiles_FormClosing(object sender, FormClosingEventArgs e)
         {
+            saveProfiles();    
 
-    /*        JObject arr = new JObject();
-            foreach ( Profile temp in profiles)
-            {
-                
-                
-                arr.Add(temp.name,temp.serialize());
-            }*/
-            //string str =  JsonConvert.SerializeObject(arr);
+        }
+        
+        private void saveProfiles()
+        {
             string str = JsonConvert.SerializeObject(profiles);
 
             StreamWriter ft = new StreamWriter(fileAppData.FullName);
             ft.Write(str);
             ft.Close();
-
-
-
-
         }
 
         private void listProfiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -358,7 +353,7 @@ namespace Stack_Program
 
             profiles[0].addProfileToGrid(this);
             listProfiles.SelectedIndex = 0;
-            removeProfile.Enabled = true;
+            removeProfileBtn.Enabled = true;
         }
 
         public Grid returnGrid()
@@ -409,6 +404,48 @@ namespace Stack_Program
             isClosedAppAfterRunAll = (sender as CheckBox).Checked;
         }
 
+        private void exportBtn_Click(object sender, EventArgs e)
+        {
+            saveProfiles();
+            SaveFileDialog d = new SaveFileDialog();
+            d.Filter = "File JSON|*.json";
+            d.Title = "Salva il file di configurazione";
+            d.ShowDialog();
+
+            string newLocation = d.FileName;
+            if(newLocation != "")
+               fileAppData.CopyTo(newLocation, true);
+        }
+
+        private void enableAppBtn_Click(object sender, EventArgs e)
+        {
+            foreach(DataGridViewRow rowSelected in grid.SelectedRows) {
+                toggleEnableDisableApp(rowSelected, true);
+                selectedProfile.enaleFile(rowSelected.Index);
+            }
+        }
+                
+
+        private void disableRowBtn_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow rowSelected in grid.SelectedRows) {
+                toggleEnableDisableApp(rowSelected, false);
+                selectedProfile.disableFile(rowSelected.Index);
+            }
+        }
+
+        public void toggleEnableDisableApp(DataGridViewRow row, bool enabled)
+        {
+            if (enabled) {
+                row.DefaultCellStyle.BackColor = Color.White;
+            }
+            else {
+                row.DefaultCellStyle.BackColor = Color.LightGray;
+                
+            }
+
+            row.Selected = false;
+        }
 
         /*
         private void grid_MouseMove(object sender, MouseEventArgs e)
@@ -497,7 +534,7 @@ namespace Stack_Program
             this.AllowUserToResizeRows = false;
             this.ShowCellToolTips = true;
             this.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.MultiSelect = false;
+            this.MultiSelect = true;
             this.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.AllowUserToOrderColumns = true;
 
