@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,6 +30,7 @@ namespace Stack_Program
         FileInfo fileAppData;
         string dirAppData;
         string previousPath = "";
+        bool isClosedAppAfterRunAll = false;
         //        public delegate void returnGrid();
 
         public Form1()
@@ -122,17 +123,26 @@ namespace Stack_Program
 
         private void searchApp_Click(object sender, EventArgs e)
         {
-            using(var searchAppForm = new Stack_Program.searchAppForm()){
+            using(var searchAppForm = new Stack_Program.searchAppForm(selectedProfile.files)){
 
                 var result = searchAppForm.ShowDialog();
                 if( result == DialogResult.OK)
                 {
                     List<File> temp =  searchAppForm.selectedPrograms;
-                    foreach(File f in temp)
+
+                    List<File> toRemove = selectedProfile.files.Except(temp).ToList();
+                    temp = temp.Except(toRemove).ToList();
+
+                    if (toRemove.Count > 0) {
+                        foreach (File r in toRemove) {
+                            selectedProfile.removeFile(r, this);
+                        }
+                    }
+
+
+                    foreach (File f in temp)
                     {
-                        if (selectedProfile.containsFile(f))
-                            MessageBox.Show("Il programma " + f.name + "è già presente in questo profilo");
-                        else
+                        if (!selectedProfile.containsFile(f))
                             selectedProfile.addFile( f, this );
                     }
 
@@ -148,6 +158,9 @@ namespace Stack_Program
         private void runAll_Click(object sender, EventArgs e)
         {
             selectedProfile.runAll();
+
+            if (isClosedAppAfterRunAll)
+                this.Close();
         }
 
         private void deleteApp_Click(object sender, EventArgs e)
@@ -389,6 +402,11 @@ namespace Stack_Program
             }
             
 
+        }
+
+        private void closeAfterCb_CheckedChanged(object sender, EventArgs e)
+        {
+            isClosedAppAfterRunAll = (sender as CheckBox).Checked;
         }
 
 
