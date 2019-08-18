@@ -38,6 +38,8 @@
             this.sortByZABtn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.listFolderCb = new System.Windows.Forms.CheckBox();
+            this.searchTB = new System.Windows.Forms.TextBox();
+            this.treeSearch = new My.Examples.UserControls.TriStateTreeView();
             this.tree = new My.Examples.UserControls.TriStateTreeView();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -46,7 +48,7 @@
             // searchDone
             // 
             this.searchDone.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchDone.Location = new System.Drawing.Point(467, 25);
+            this.searchDone.Location = new System.Drawing.Point(497, 12);
             this.searchDone.Name = "searchDone";
             this.searchDone.Size = new System.Drawing.Size(75, 30);
             this.searchDone.TabIndex = 4;
@@ -139,6 +141,33 @@
             this.listFolderCb.UseVisualStyleBackColor = true;
             this.listFolderCb.CheckedChanged += new System.EventHandler(this.listFolderCb_CheckedChanged);
             // 
+            // searchTB
+            // 
+            this.searchTB.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.searchTB.Location = new System.Drawing.Point(449, 89);
+            this.searchTB.MaxLength = 200;
+            this.searchTB.Name = "searchTB";
+            this.searchTB.Size = new System.Drawing.Size(123, 20);
+            this.searchTB.TabIndex = 12;
+            this.searchTB.Text = "Cerca";
+            this.searchTB.TextChanged += new System.EventHandler(this.searchTB_TextChanged);
+            this.searchTB.Enter += new System.EventHandler(this.searchBox_Focus);
+            this.searchTB.Leave += new System.EventHandler(this.searchBox_Blur);
+            // 
+            // treeSearch
+            // 
+            this.treeSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeSearch.CheckBoxes = true;
+            this.treeSearch.HotTracking = true;
+            this.treeSearch.Location = new System.Drawing.Point(12, 115);
+            this.treeSearch.Name = "treeSearch";
+            this.treeSearch.Size = new System.Drawing.Size(560, 487);
+            this.treeSearch.TabIndex = 13;
+            this.treeSearch.Visible = false;
+            this.treeSearch.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.addProgramToSelection);
+            // 
             // tree
             // 
             this.tree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -157,6 +186,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 651);
+            this.Controls.Add(this.treeSearch);
+            this.Controls.Add(this.searchTB);
             this.Controls.Add(this.tree);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -170,6 +201,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -184,5 +216,7 @@
         private System.Windows.Forms.Button sortByZABtn;
         private System.Windows.Forms.CheckBox listFolderCb;
         private My.Examples.UserControls.TriStateTreeView tree;
+        private System.Windows.Forms.TextBox searchTB;
+        private My.Examples.UserControls.TriStateTreeView treeSearch;
     }
 }
