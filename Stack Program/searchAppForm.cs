@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ using System.Management;
 using System.Management.Instrumentation;
 using System.Threading;
 using IWshRuntimeLibrary;
-using System.IO;
+using System.IO;    
 
 namespace Stack_Program
 {
@@ -26,7 +26,8 @@ namespace Stack_Program
 
         List<File> lnkList = new List<File>();
         Dictionary<string, List<File>> lnkDictionaryByFolder = new Dictionary<string, List<File>>();
-        Dictionary<string, List<File>> lnkDictionaryByAlphabet = new Dictionary<string, List<File>>();
+        Dictionary<string, List<File>> lnkDictionaryByFirstLetter = new Dictionary<string, List<File>>();
+        List<String> lnkArrayAlphabet = new List<string>();
 
         public class NodeSorterAZ : IComparer
         {
@@ -107,17 +108,34 @@ namespace Stack_Program
 
         private void searchAppForm_Shown(object sender, EventArgs e)
         {
-
+            searchTB.Focus();
             Console.WriteLine("iniziato");
             // backgroundWorker1.RunWorkerAsync();
            
 
             getInstalledApps();
 
-            populateTree(lnkDictionaryByAlphabet);
+            populateTree(lnkDictionaryByFirstLetter, tree);
 
             tree.Visible = true;
         //    provaDraw();
+
+        }
+
+        private void searchBox_Focus(object sender, EventArgs e)
+        {
+            if(searchTB.Text == "Cerca")
+                searchTB.Text = "";
+            searchTB.ForeColor = Color.Black;
+
+        }
+
+        private void searchBox_Blur(object sender, EventArgs e)
+        {
+            if(searchTB.Text == "") {
+                searchTB.Text = "Cerca";
+                searchTB.ForeColor = Color.LightGray;
+            }
 
         }
 
@@ -206,20 +224,23 @@ namespace Stack_Program
 
             string[] alphabet = lnkList.Select(
                 lnk => lnk.name
-                    .Substring(0, 1)
-                    .ToString()
-                    .ToUpperInvariant()
             ).Distinct().ToArray();
 
-            foreach (string letter in alphabet)
+            
+            foreach (string word in alphabet)
             {
-                lnkDictionaryByAlphabet[letter] =
-                    lnkList.Where(lnk => lnk.name.StartsWith(letter.ToUpperInvariant()) ).ToList();
+                string letter = word.Substring(0, 1).ToString().ToUpperInvariant();
+                lnkDictionaryByFirstLetter[letter] =
+                    lnkList.Where(lnk => lnk.name.StartsWith(letter, true, null) ).ToList();
+
+                lnkArrayAlphabet.Add(word);
             }
+
+
 
         }
 
-        private void populateTree( Dictionary<string, List<File>> dict)
+        private void populateTree( Dictionary<string, List<File>> dict, My.Examples.UserControls.TriStateTreeView tree)
         {
 
             tree.Visible = false;
@@ -277,13 +298,11 @@ namespace Stack_Program
             }
 
             tree.ExpandAll();
-            tree.Nodes[0].EnsureVisible();
+            if(tree.Nodes.Count > 0)
+                tree.Nodes[0].EnsureVisible();
             tree.Visible = true;
 
         }
-
-
-
 
         private void searchDone_Click(object sender, EventArgs e)
         {
@@ -372,22 +391,56 @@ namespace Stack_Program
             // Se vero, organizza in cartelle
             if ((sender as CheckBox).Checked)
             {
-                populateTree(lnkDictionaryByFolder);
+                populateTree(lnkDictionaryByFolder, tree);
             }
             else  // altrimenti alfabeticamente
             {
-                populateTree(lnkDictionaryByAlphabet);
+                populateTree(lnkDictionaryByFirstLetter,tree);
             }
-            {
-                
-            }
+            
             
             
         }
 
+        private void searchTB_TextChanged(object sender, EventArgs e) {
+            string textSearch = searchTB.Text;
+            if (textSearch == "" || textSearch == "Cerca") {
+                treeSearch.Visible = false;
+                return;
+            }
 
-       
-  
+            List<string> toSearch =
+                lnkArrayAlphabet.Where(
+                    lnk => lnkArrayAlphabet.Any(
+                    f => lnk.StartsWith(textSearch, true, null)
+                    )
+                ).ToList();
+
+
+            treeSearch.Nodes.Clear();
+            TreeNode nodeParent = new TreeNode("Nessun risultato");
+
+            if (toSearch.Count > 0) {
+                treeSearch.Visible = true;
+                nodeParent.Text = textSearch;
+
+                foreach (var s in toSearch) {
+
+                    TreeNode n = new TreeNode(s);
+
+                    nodeParent.Nodes.Add(n);
+
+                }
+
+                nodeParent.Expand();
+            }
+            
+                   
+            treeSearch.Nodes.Add(nodeParent);
+            
+            
+        }
+        
     }
 
 }

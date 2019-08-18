@@ -76,9 +76,9 @@ namespace Stack_Program
                 this.tempProfile = new Profile("temp");
                 selectedProfile = this.tempProfile;
             }
-            
-            
 
+
+            searchAppBtn.PerformClick();
         }
 
         private void addProgram_Click(object sender, EventArgs e)
