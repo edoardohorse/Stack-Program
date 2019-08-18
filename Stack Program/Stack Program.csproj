@@ -122,6 +122,12 @@
     <Compile Include="searchAppForm.Designer.cs">
       <DependentUpon>searchAppForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestBind.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestBind.Designer.cs">
+      <DependentUpon>TestBind.cs</DependentUpon>
+    </Compile>
     <Compile Include="TriStateCheckBoxTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -145,6 +151,9 @@
     </Compile>
     <EmbeddedResource Include="searchAppForm.resx">
       <DependentUpon>searchAppForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestBind.resx">
+      <DependentUpon>TestBind.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />

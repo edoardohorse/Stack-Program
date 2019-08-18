@@ -78,7 +78,8 @@ namespace Stack_Program
             }
 
 
-            searchAppBtn.PerformClick();
+            //searchAppBtn.PerformClick();
+            new TestBind().Show(this);
         }
 
         private void addProgram_Click(object sender, EventArgs e)
