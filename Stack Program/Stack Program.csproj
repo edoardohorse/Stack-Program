@@ -128,6 +128,7 @@
     <Compile Include="TestBind.Designer.cs">
       <DependentUpon>TestBind.cs</DependentUpon>
     </Compile>
+    <Compile Include="TreeNodeBounded.cs" />
     <Compile Include="TriStateCheckBoxTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
