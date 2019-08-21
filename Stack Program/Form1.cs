@@ -118,7 +118,8 @@ namespace Stack_Program
 
         private void runApp_Click(object sender, EventArgs e)
         {
-            selectedProfile.runApp(grid.SelectedRows[0].Index);
+            if(grid.SelectedRows.Count == 1)
+                selectedProfile.runApp(grid.SelectedRows[0].Index);
         }
 
         private void searchApp_Click(object sender, EventArgs e)
@@ -206,8 +207,7 @@ namespace Stack_Program
         private void enableButtons()
         {
             areButtonsEnabled = deleteAllBtn.Enabled =
-                deleteAppBtn.Enabled = runAllBtn.Enabled = 
-                runAppBtn.Enabled = addProfileBtn.Enabled =
+                deleteAppBtn.Enabled = runAllBtn.Enabled = addProfileBtn.Enabled =
                 disableAppBtn.Enabled = enableAppBtn.Enabled =          true;
         }
 
@@ -215,7 +215,7 @@ namespace Stack_Program
         {
             areButtonsEnabled = deleteAllBtn.Enabled =
                deleteAppBtn.Enabled = runAllBtn.Enabled =
-               runAppBtn.Enabled = /*addProfile.Enabled =*/
+                   /*addProfile.Enabled =*/
                disableAppBtn.Enabled = enableAppBtn.Enabled = false;
         }
 
@@ -515,6 +515,23 @@ namespace Stack_Program
         }
         */
 
+        private void grid1_SelectionChanged(object sender, EventArgs e)
+        {
+            switch (grid.SelectedRows.Count)
+            {
+                case 0:
+                {
+                    runAppBtn.Enabled = false;
+                    break;
+                }
+                case 1:{
+                    runAppBtn.Enabled = true;
+                    break;
+                }
+            }
+            
+            
+        }
     }
     public class Grid: DataGridView
     {
