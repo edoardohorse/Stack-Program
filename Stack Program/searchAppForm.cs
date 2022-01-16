@@ -12,7 +12,10 @@ using System.Management;
 using System.Management.Instrumentation;
 using System.Threading;
 using IWshRuntimeLibrary;
-using System.IO;    
+using System.IO;
+using System.Diagnostics;
+using System.Security.Principal;
+using System.Security.AccessControl;
 
 namespace Stack_Program
 {
@@ -73,11 +76,25 @@ namespace Stack_Program
             InitializeComponent();
 
             selectedPrograms.AddRange(filesAlreadyInProfile);
+
+            bool b = UserHasDirectoryAccesRight(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu));
+            Debug.WriteLine(b);
             //lbInfo.BackColor = Color.Transparent;
             // backgroundWorker1.WorkerReportsProgress = true;
             // backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
+        private bool UserHasDirectoryAccesRight(string DirPath)
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent(false);
+            AuthorizationRuleCollection dSecurity =
+                    Directory.GetAccessControl(DirPath, AccessControlSections.Access)
+                             .GetAccessRules(true, true, typeof(SecurityIdentifier));
+
+            bool hasRight = dSecurity.Cast<AuthorizationRule>()
+                                      .Any(x => x.IdentityReference.Value.Equals(identity.Owner.Value));
+            return hasRight;
+        }
 
         private delegate void DelegateSearchDone();
 
@@ -111,8 +128,8 @@ namespace Stack_Program
             searchTB.Focus();
             Console.WriteLine("iniziato");
             // backgroundWorker1.RunWorkerAsync();
-           
 
+            Debug.WriteLine("prova");
             getInstalledApps();
 
             populateTree(lnkDictionaryByFirstLetter, tree);
@@ -143,10 +160,24 @@ namespace Stack_Program
         public void getInstalledApps()
         {
 
+            //const string PathStartMenu  = "C:\\ProgramData\\Start Menu\\Programs";
+            string PathStartMenu  = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu, Environment.SpecialFolderOption.None);
+            
+            if (PathStartMenu == "")
+            {
+                Debug.WriteLine("Il path non esiste " + PathStartMenu);
+                return;
+            }
+            Debug.WriteLine("Il path start menu: " + PathStartMenu);
 
-            const string PathStartMenu  = "C:\\ProgramData\\Start Menu\\Programs";
+
             string[] paths = Directory.GetDirectories(PathStartMenu);
             string[] pathStartMenuSplit = PathStartMenu.Split(new[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+
+
+            Debug.WriteLine("Trovati programmi " + paths.Length);
+
+   
 
             appendPathToList(new string[1] { PathStartMenu}, false);
             appendPathToList(paths, true);
@@ -161,50 +192,69 @@ namespace Stack_Program
                     if (!System.IO.Directory.Exists(path))
                         continue;
 
-                    if (recursive) {
-                        string[] subfolders = Directory.GetDirectories(path);
+            
+                    try
+                    {
+                        if (recursive) {
+                            string[] subfolders = Directory.GetDirectories(path);
 
-                        if (subfolders.Length > 0) {
-                            appendPathToList(subfolders);
+                            if (subfolders.Length > 0) {
+                                appendPathToList(subfolders);
+                            }
                         }
-                    }
+                    
+                        string[] t = Directory.GetFiles(path);
+
                     
 
-                    string[] t = Directory.GetFiles(path);
+                        foreach (string c in t) {
+                            FileInfo temp1 = new FileInfo(c);
+                            Debug.WriteLine(temp1.Name);
+                            if (temp1.Extension == ".lnk") {
+                                IWshShell shell = new WshShell();
+                                var lnk = shell.CreateShortcut(c) as IWshShortcut;
 
+                                
+                                if (lnk.TargetPath.EndsWith(".exe") || lnk.TargetPath.EndsWith(".EXE")) {
+                                    File temp = new Stack_Program.File(c);
 
+                                    string[] fullPathSplit = c.Split(new[] {"\\"}, StringSplitOptions.RemoveEmptyEntries);
 
-                    foreach (string c in t) {
-                        FileInfo temp1 = new FileInfo(c);
-                        if (temp1.Extension == ".lnk") {
-                            IWshShell shell = new WshShell();
-                            var lnk = shell.CreateShortcut(c) as IWshShortcut;
+                                    fullPathSplit = fullPathSplit.Skip(pathStartMenuSplit.Length).ToArray();
 
-                            if (lnk.TargetPath.EndsWith(".exe") || lnk.TargetPath.EndsWith(".EXE")) {
+                                    temp.parentDir = fullPathSplit[0] == temp.fileName ? "Programmi" : fullPathSplit[0];
+
+                                    lnkList.Add(temp);
+                                }
+
+                                continue;
+                            }
+
+                            if (temp1.Extension == ".appref-ms") {
                                 File temp = new Stack_Program.File(c);
-
-                                string[] fullPathSplit = c.Split(new[] {"\\"}, StringSplitOptions.RemoveEmptyEntries);
-
-                                fullPathSplit = fullPathSplit.Skip(pathStartMenuSplit.Length).ToArray();
-
-                                temp.parentDir = fullPathSplit[0] == temp.fileName ? "Programmi" : fullPathSplit[0];
+                                temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
+                                if (temp.parentDir != null)
+                                    temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
 
                                 lnkList.Add(temp);
                             }
 
-                            continue;
-                        }
-
-                        if (temp1.Extension == ".appref-ms") {
-                            File temp = new Stack_Program.File(c);
-                            temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
-                            if (temp.parentDir != null)
+                            if (temp1.Extension == ".url")
+                            {
+                                File temp = new Stack_Program.File(c);
                                 temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
+                                if (temp.parentDir != null)
+                                    temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-                            lnkList.Add(temp);
+                                lnkList.Add(temp);
+                            }
+
                         }
 
-
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        Debug.WriteLine("Pat non accessibile " + path);
                     }
 
                 }
