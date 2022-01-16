@@ -140,7 +140,8 @@ namespace Stack_Program
             populateTree(lnkDictionaryByFirstLetter, tree);
 
             tree.Visible = true;
-        //    provaDraw();
+            sortTree(true);
+            //    provaDraw();
 
         }
 
