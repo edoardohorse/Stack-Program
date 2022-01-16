@@ -130,7 +130,12 @@ namespace Stack_Program
             // backgroundWorker1.RunWorkerAsync();
 
             Debug.WriteLine("prova");
-            getInstalledApps();
+
+            string[] paths = new[]{ Environment.GetFolderPath(Environment.SpecialFolder.StartMenu, Environment.SpecialFolderOption.None),
+                  Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu, Environment.SpecialFolderOption.None)};
+
+
+            getInstalledApps(paths);
 
             populateTree(lnkDictionaryByFirstLetter, tree);
 
@@ -157,137 +162,147 @@ namespace Stack_Program
         }
 
 
-        public void getInstalledApps()
+        public void getInstalledApps(string[] pathApps)
         {
 
-            //const string PathStartMenu  = "C:\\ProgramData\\Start Menu\\Programs";
-            string PathStartMenu  = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu, Environment.SpecialFolderOption.None);
-            
-            if (PathStartMenu == "")
-            {
-                Debug.WriteLine("Il path non esiste " + PathStartMenu);
-                return;
-            }
-            Debug.WriteLine("Il path start menu: " + PathStartMenu);
+            //const string pathApps  = "C:\\ProgramData\\Start Menu\\Programs";
 
-
-            string[] paths = Directory.GetDirectories(PathStartMenu);
-            string[] pathStartMenuSplit = PathStartMenu.Split(new[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
-
-
-            Debug.WriteLine("Trovati programmi " + paths.Length);
-
-   
-
-            appendPathToList(new string[1] { PathStartMenu}, false);
-            appendPathToList(paths, true);
-            lnkList.Sort((x, y) => string.Compare(x.name, y.name));
-
-            void appendPathToList(string[] pathsToAppend, bool recursive = false)
+            foreach (string pathApp in pathApps)
             {
 
-                               
-                foreach (string path in pathsToAppend) {
+                if (pathApp == "")
+                {
+                    Debug.WriteLine("Il path non esiste " + pathApp);
+                    return;
+                }
+                Debug.WriteLine("Il path start menu: " + pathApp);
 
-                    if (!System.IO.Directory.Exists(path))
-                        continue;
 
-            
-                    try
+                string[] paths = Directory.GetDirectories(pathApp);
+                string[] pathAppSplit = pathApp.Split(new[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                Debug.WriteLine("Trovati programmi " + paths.Length);
+
+
+
+                appendPathToList(new string[1] { pathApp }, false);
+                appendPathToList(paths, true);
+                lnkList.Sort((x, y) => string.Compare(x.name, y.name));
+
+                void appendPathToList(string[] pathsToAppend, bool recursive = false)
+                {
+
+
+                    foreach (string path in pathsToAppend)
                     {
-                        if (recursive) {
-                            string[] subfolders = Directory.GetDirectories(path);
 
-                            if (subfolders.Length > 0) {
-                                appendPathToList(subfolders);
+                        if (!System.IO.Directory.Exists(path))
+                            continue;
+
+
+                        try
+                        {
+                            if (recursive)
+                            {
+                                string[] subfolders = Directory.GetDirectories(path);
+
+                                if (subfolders.Length > 0)
+                                {
+                                    appendPathToList(subfolders);
+                                }
                             }
-                        }
-                    
-                        string[] t = Directory.GetFiles(path);
 
-                    
+                            string[] t = Directory.GetFiles(path);
 
-                        foreach (string c in t) {
-                            FileInfo temp1 = new FileInfo(c);
-                            Debug.WriteLine(temp1.Name);
-                            if (temp1.Extension == ".lnk") {
-                                IWshShell shell = new WshShell();
-                                var lnk = shell.CreateShortcut(c) as IWshShortcut;
 
-                                
-                                if (lnk.TargetPath.EndsWith(".exe") || lnk.TargetPath.EndsWith(".EXE")) {
+
+                            foreach (string c in t)
+                            {
+                                FileInfo temp1 = new FileInfo(c);
+                                Debug.WriteLine(temp1.Name);
+                                if (temp1.Extension == ".lnk")
+                                {
+                                    IWshShell shell = new WshShell();
+                                    var lnk = shell.CreateShortcut(c) as IWshShortcut;
+
+
+                                    if (lnk.TargetPath.EndsWith(".exe") || lnk.TargetPath.EndsWith(".EXE"))
+                                    {
+                                        File temp = new Stack_Program.File(c);
+
+                                        string[] fullPathSplit = c.Split(new[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+
+                                        fullPathSplit = fullPathSplit.Skip(pathAppSplit.Length).ToArray();
+
+                                        temp.parentDir = fullPathSplit[0] == temp.fileName ? "Programmi" : fullPathSplit[0];
+
+                                        lnkList.Add(temp);
+                                    }
+
+                                    continue;
+                                }
+
+                                if (temp1.Extension == ".appref-ms")
+                                {
                                     File temp = new Stack_Program.File(c);
-
-                                    string[] fullPathSplit = c.Split(new[] {"\\"}, StringSplitOptions.RemoveEmptyEntries);
-
-                                    fullPathSplit = fullPathSplit.Skip(pathStartMenuSplit.Length).ToArray();
-
-                                    temp.parentDir = fullPathSplit[0] == temp.fileName ? "Programmi" : fullPathSplit[0];
+                                    temp.parentDir = c.Split(new[] { pathApp }, StringSplitOptions.RemoveEmptyEntries)[0];
+                                    if (temp.parentDir != null)
+                                        temp.parentDir = c.Split(new[] { pathApp }, StringSplitOptions.RemoveEmptyEntries)[0];
 
                                     lnkList.Add(temp);
                                 }
 
-                                continue;
-                            }
+                                if (temp1.Extension == ".url")
+                                {
+                                    File temp = new Stack_Program.File(c);
+                                    temp.parentDir = c.Split(new[] { pathApp }, StringSplitOptions.RemoveEmptyEntries)[0];
+                                    if (temp.parentDir != null)
+                                        temp.parentDir = c.Split(new[] { pathApp }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-                            if (temp1.Extension == ".appref-ms") {
-                                File temp = new Stack_Program.File(c);
-                                temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
-                                if (temp.parentDir != null)
-                                    temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
+                                    lnkList.Add(temp);
+                                }
 
-                                lnkList.Add(temp);
-                            }
-
-                            if (temp1.Extension == ".url")
-                            {
-                                File temp = new Stack_Program.File(c);
-                                temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
-                                if (temp.parentDir != null)
-                                    temp.parentDir = c.Split(new[] { PathStartMenu }, StringSplitOptions.RemoveEmptyEntries)[0];
-
-                                lnkList.Add(temp);
                             }
 
                         }
+                        catch (UnauthorizedAccessException)
+                        {
+                            Debug.WriteLine("Path non accessibile " + path);
+                        }
 
                     }
-                    catch (UnauthorizedAccessException)
-                    {
-                        Debug.WriteLine("Pat non accessibile " + path);
-                    }
+
 
                 }
-                
+
+                linkFoundLbl.Text = $"{lnkList.Count} programmi trovati";
+
+
+                string[] keys = lnkList.Select(l => l.parentDir).Distinct().ToArray();
+                Array.Sort(keys);
+
+                foreach (string key in keys)
+                {
+                    lnkDictionaryByFolder[key] = lnkList.Where(lnk => lnk.parentDir == key).ToList();
+                }
+
+                string[] alphabet = lnkList.Select(
+                    lnk => lnk.name
+                ).Distinct().ToArray();
+
+
+                foreach (string word in alphabet)
+                {
+                    string letter = word.Substring(0, 1).ToString().ToUpperInvariant();
+                    lnkDictionaryByFirstLetter[letter] =
+                        lnkList.Where(lnk => lnk.name.StartsWith(letter, true, null)).ToList();
+
+                    lnkArrayAlphabet.Add(word);
+                }
+
 
             }
-
-            linkFoundLbl.Text = $"{lnkList.Count} programmi trovati";
-
-
-            string[] keys = lnkList.Select(l => l.parentDir).Distinct().ToArray();
-            Array.Sort(keys);
-
-            foreach (string key in keys) {
-                lnkDictionaryByFolder[key] = lnkList.Where(lnk => lnk.parentDir == key).ToList();
-            }
-
-            string[] alphabet = lnkList.Select(
-                lnk => lnk.name
-            ).Distinct().ToArray();
-
-            
-            foreach (string word in alphabet)
-            {
-                string letter = word.Substring(0, 1).ToString().ToUpperInvariant();
-                lnkDictionaryByFirstLetter[letter] =
-                    lnkList.Where(lnk => lnk.name.StartsWith(letter, true, null) ).ToList();
-
-                lnkArrayAlphabet.Add(word);
-            }
-
-
-
         }
 
         private void populateTree( Dictionary<string, List<File>> dict, My.Examples.UserControls.TriStateTreeView tree)
